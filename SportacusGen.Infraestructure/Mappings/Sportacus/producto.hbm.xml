@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+		<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+		                   assembly="SportacusGen.Infraestructure"
+		                   namespace="SportacusGen.Infraestructure.EN.Sportacus">
+		    
+		    
+			
+				<class name="ProductoNH" table="Producto"> 
+				  	
+						<id name="Id" column="id" type="integer"> 
+							<generator class="hilo"/>
+						</id>
+			
+					
+					<property name="Titulo" type="string"> 
+						<column name="titulo"  not-null="true"/>
+					</property>
+					<property name="Descripcion" type="string"> 
+						<column name="descripcion"  not-null="true"/>
+					</property>
+					<property name="Precio" type="double"> 
+						<column name="precio"  not-null="true"/>
+					</property>
+					<property name="Estado" > 
+						<column name="estado"  not-null="true"/>
+					</property>
+					<property name="Categoria" > 
+						<column name="categoria"  not-null="true"/>
+					</property>
+					<property name="FechaPublicacion" type="date"> 
+						<column name="fechaPublicacion"  not-null="true"/>
+					</property>
+					<property name="Disponible" type="boolean"> 
+						<column name="disponible"  not-null="true"/>
+					</property>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		  			
+						<bag name="Valoracion" >
+							<key>
+							
+								
+								<column name="FK_id_idValoracion_2"/>
+					      	</key>
+							<one-to-many class="SportacusGen.Infraestructure.EN.Sportacus.ValoracionNH"/>
+					    </bag>
+					
+			
+		  			
+						<bag name="Compra" >
+							<key>
+							
+								
+								<column name="FK_id_idCompra_2"/>
+					      	</key>
+							<one-to-many class="SportacusGen.Infraestructure.EN.Sportacus.CompraNH"/>
+					    </bag>
+					
+			
+		  			
+						<bag name="Favorito" >
+							<key>
+							
+								
+								<column name="FK_id_idFavorito_0"/>
+					      	</key>
+							<one-to-many class="SportacusGen.Infraestructure.EN.Sportacus.FavoritoNH"/>
+					    </bag>
+					
+			
+		  			
+						<bag name="Imagen" >
+							<key>
+							
+								
+								<column name="FK_id_idImagen_0"/>
+					      	</key>
+							<one-to-many class="SportacusGen.Infraestructure.EN.Sportacus.ImagenNH"/>
+					    </bag>
+					
+			
+		  			
+						<many-to-one name="Vende" class="SportacusGen.Infraestructure.EN.Sportacus.UsuarioNH" >	
+								<column name="FK_email_idUsuario_2"/> 
+						</many-to-one>
+											 					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+		
+		 </class>	
+		  
+		  <query name="ProductoNHReadAllHQL">from ProductoNH</query>
+		  <query name="ProductoNHbuscarPorTextoHQL"><![CDATA[select p from ProductoNH p where lower(p.Titulo) like: texto or lower(p.Descripcion) like: texto order by p.Titulo asc]]></query>
+		  <query name="ProductoNHfiltrarPorCategoriaHQL"><![CDATA[select p from ProductoNH p where p.Categoria = :categoria order by p.FechaPublicacion desc]]></query>
+		  <query name="ProductoNHfiltrarPorPrecioHQL"><![CDATA[select p from ProductoNH p where p.Precio >= :minPrecio and p.Precio <= :maxPrecio order by p.Precio asc]]></query>
+		</hibernate-mapping>
+	

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+		<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+		                   assembly="SportacusGen.Infraestructure"
+		                   namespace="SportacusGen.Infraestructure.EN.Sportacus">
+		    
+		    
+			
+				<class name="MensajeNH" table="Mensaje"> 
+				  	
+						<id name="Id" column="id" type="integer"> 
+							<generator class="hilo"/>
+						</id>
+			
+					
+					<property name="Contenido" type="string"> 
+						<column name="contenido"  not-null="true"/>
+					</property>
+					<property name="FechaEnvio" type="timestamp"> 
+						<column name="fechaEnvio"  not-null="true"/>
+					</property>
+					<property name="TipoMensaje" > 
+						<column name="tipoMensaje"  not-null="true"/>
+					</property>
+					<property name="UrlMultimedia" type="string"> 
+						<column name="urlMultimedia"  not-null="true"/>
+					</property>
+			
+			
+			
+			
+			
+			
+			
+		  			
+						<many-to-one name="Emisor" class="SportacusGen.Infraestructure.EN.Sportacus.UsuarioNH" >	
+								<column name="FK_email_idUsuario_0"/> 
+						</many-to-one>
+											 					
+			
+		  			
+						<many-to-one name="Remitente" class="SportacusGen.Infraestructure.EN.Sportacus.UsuarioNH" >	
+								<column name="FK_email_idUsuario_1"/> 
+						</many-to-one>
+											 					
+			
+		  			
+					
+							   <one-to-one name="Generar" class="SportacusGen.Infraestructure.EN.Sportacus.NotificacionNH" property-ref="Mensaje" />							
+					 
+						
+					
+					
+					
+					
+					
+					
+					
+					
+		
+		 </class>	
+		  
+		  <query name="MensajeNHReadAllHQL">from MensajeNH</query>
+		  <query name="MensajeNHObtenerMensajesEntreUsuariosHQL"><![CDATA[select m from MensajeNH m where(m.Emisor.Email = :email1 and m.Remitente.Email = :email2) or (m.Emisor.Email = :email2 and m.Remitente.Email = :email1) order by m.FechaEnvio asc]]></query>
+		  <query name="MensajeNHObtenerConversacionesPorUsuarioHQL"><![CDATA[select distinct case when m.Emisor.Email = :p_UsuarioOID then m.Remitente else m.Emisor end from MensajeNH m where m.Emisor.Email = :p_UsuarioOID or m.Remitente.Email = :p_UsuarioOID]]></query>
+		</hibernate-mapping>
+	

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+		<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+		                   assembly="SportacusGen.Infraestructure"
+		                   namespace="SportacusGen.Infraestructure.EN.Sportacus">
+		    
+		    
+			
+				<class name="FavoritoNH" table="Favorito"> 
+				  	
+						<id name="Id" column="id" type="integer"> 
+							<generator class="hilo"/>
+						</id>
+			
+					
+					<property name="FechaMarcado" type="date"> 
+						<column name="fechaMarcado"  not-null="true"/>
+					</property>
+			
+			
+			
+			
+		  			
+						<many-to-one name="Producto" class="SportacusGen.Infraestructure.EN.Sportacus.ProductoNH" >	
+								<column name="FK_id_idFavorito_0"/> 
+						</many-to-one>
+											 					
+			
+		  			
+						<bag name="Guarda" table="[favorito_favorito_1]" inverse="true" >
+							<key>
+								
+									<column name="FK_id_idFavorito_1"/> 
+							</key>
+      						<many-to-many class="SportacusGen.Infraestructure.EN.Sportacus.UsuarioNH">
+									<column name="FK_email_idFavorito"/> 
+      						</many-to-many>
+    					</bag>
+					
+					
+					
+					
+		
+		 </class>	
+		  
+		  <query name="FavoritoNHReadAllHQL">from FavoritoNH</query>
+		  <query name="FavoritoNHobtenerFavoritosPorUsuarioHQL"><![CDATA[select distinct f from FavoritoNH f left join fetch f.Guarda g where g.Email = :p_UsuarioOID]]></query>
+		</hibernate-mapping>
+	

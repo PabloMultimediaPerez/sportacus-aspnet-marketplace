@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8" ?>
+		<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+		                   assembly="SportacusGen.Infraestructure"
+		                   namespace="SportacusGen.Infraestructure.EN.Sportacus">
+		    
+		    
+			
+				<class name="UsuarioNH" table="Usuario"> 
+						<id name="Email" column="email"/> 
+			
+					
+					<property name="Nombre" type="string"> 
+						<column name="nombre"  not-null="true"/>
+					</property>
+					<property name="Telefono" type="integer"> 
+						<column name="telefono"  not-null="true"/>
+					</property>
+					<property name="Direccion" type="string"> 
+						<column name="direccion"  not-null="true"/>
+					</property>
+					<property name="FechaRegistro" type="date"> 
+						<column name="fechaRegistro"  not-null="true"/>
+					</property>
+					<property name="EsAdministrador" type="boolean"> 
+						<column name="esAdministrador"  not-null="true"/>
+					</property>
+					<property name="Pass" type="string"> 
+						<column name="pass"  not-null="true"/>
+					</property>
+			
+			
+			
+			
+			
+			
+			
+			
+		  			
+						<bag name="Emitido" >
+							<key>
+							
+								
+								<column name="FK_email_idUsuario_0"/>
+					      	</key>
+							<one-to-many class="SportacusGen.Infraestructure.EN.Sportacus.MensajeNH"/>
+					    </bag>
+					
+			
+		  			
+						<bag name="Recibido" >
+							<key>
+							
+								
+								<column name="FK_email_idUsuario_1"/>
+					      	</key>
+							<one-to-many class="SportacusGen.Infraestructure.EN.Sportacus.MensajeNH"/>
+					    </bag>
+					
+			
+		  			
+						<bag name="Notificacion" >
+							<key>
+							
+								
+								<column name="FK_email_idNotificacion_0"/>
+					      	</key>
+							<one-to-many class="SportacusGen.Infraestructure.EN.Sportacus.NotificacionNH"/>
+					    </bag>
+					
+			
+		  			
+						<bag name="Valoraciones_recibidas" >
+							<key>
+							
+								
+								<column name="FK_email_idValoracion"/>
+					      	</key>
+							<one-to-many class="SportacusGen.Infraestructure.EN.Sportacus.ValoracionNH"/>
+					    </bag>
+					
+			
+		  			
+						<bag name="Valoraciones_realizadas" >
+							<key>
+							
+								
+								<column name="FK_email_idComprador"/>
+					      	</key>
+							<one-to-many class="SportacusGen.Infraestructure.EN.Sportacus.ValoracionNH"/>
+					    </bag>
+					
+			
+		  			
+						<bag name="Venta" >
+							<key>
+							
+								
+								<column name="FK_email_idVendedor"/>
+					      	</key>
+							<one-to-many class="SportacusGen.Infraestructure.EN.Sportacus.CompraNH"/>
+					    </bag>
+					
+			
+		  			
+						<bag name="Compra" >
+							<key>
+							
+								
+								<column name="FK_email_idCompra_0"/>
+					      	</key>
+							<one-to-many class="SportacusGen.Infraestructure.EN.Sportacus.CompraNH"/>
+					    </bag>
+					
+			
+		  			
+						<bag name="En_venta" >
+							<key>
+							
+								
+								<column name="FK_email_idUsuario_2"/>
+					      	</key>
+							<one-to-many class="SportacusGen.Infraestructure.EN.Sportacus.ProductoNH"/>
+					    </bag>
+					
+			
+		  			
+						<bag name="Favorito" table="[favorito_favorito_1]"  >
+							<key>
+								
+									<column name="FK_email_idFavorito"/> 
+							</key>
+      						<many-to-many class="SportacusGen.Infraestructure.EN.Sportacus.FavoritoNH">
+									<column name="FK_id_idFavorito_1"/> 
+      						</many-to-many>
+    					</bag>
+			
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+		
+		 </class>	
+		  
+		  <query name="UsuarioNHReadAllHQL">from UsuarioNH</query>
+		</hibernate-mapping>
+	

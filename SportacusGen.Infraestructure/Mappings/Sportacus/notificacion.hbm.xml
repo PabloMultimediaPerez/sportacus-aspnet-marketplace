@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+		<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+		                   assembly="SportacusGen.Infraestructure"
+		                   namespace="SportacusGen.Infraestructure.EN.Sportacus">
+		    
+		    
+			
+				<class name="NotificacionNH" table="Notificacion"> 
+				  	
+						<id name="Id" column="id" type="integer"> 
+							<generator class="hilo"/>
+						</id>
+			
+					
+					<property name="Titulo" type="string"> 
+						<column name="titulo"  not-null="true"/>
+					</property>
+					<property name="Contenido" type="string"> 
+						<column name="contenido"  not-null="true"/>
+					</property>
+					<property name="FechaCreacion" type="date"> 
+						<column name="fechaCreacion"  not-null="true"/>
+					</property>
+					<property name="Leida" type="boolean"> 
+						<column name="leida"  not-null="true"/>
+					</property>
+					<property name="TipoNotificacion" > 
+						<column name="tipoNotificacion"  not-null="true"/>
+					</property>
+			
+			
+			
+			
+			
+			
+			
+			
+		  			
+					
+							<many-to-one name="Mensaje" class="SportacusGen.Infraestructure.EN.Sportacus.MensajeNH" >
+								<column name="FK_id_idMensaje"/> 
+        					</many-to-one>
+					 
+						
+			
+		  			
+						<many-to-one name="Notificado" class="SportacusGen.Infraestructure.EN.Sportacus.UsuarioNH" >	
+								<column name="FK_email_idNotificacion_0"/> 
+						</many-to-one>
+											 					
+					
+					
+					
+					
+					
+					
+					
+					
+		
+		 </class>	
+		  
+		  <query name="NotificacionNHReadAllHQL">from NotificacionNH</query>
+		  <query name="NotificacionNHobtenerNotificacionesPorUsuarioHQL"><![CDATA[select n from NotificacionNH n left join fetch n.Notificado u where u.Email = :p_UsuarioOID]]></query>
+		</hibernate-mapping>
+	

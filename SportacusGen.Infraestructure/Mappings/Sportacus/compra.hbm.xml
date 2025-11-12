@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+		<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+		                   assembly="SportacusGen.Infraestructure"
+		                   namespace="SportacusGen.Infraestructure.EN.Sportacus">
+		    
+		    
+			
+				<class name="CompraNH" table="Compra"> 
+				  	
+						<id name="Id" column="id" type="integer"> 
+							<generator class="hilo"/>
+						</id>
+			
+					
+					<property name="FechaCompra" type="date"> 
+						<column name="fechaCompra"  not-null="true"/>
+					</property>
+					<property name="PrecioFinal" type="double"> 
+						<column name="precioFinal"  not-null="true"/>
+					</property>
+					<property name="EstadoCompra" > 
+						<column name="estadoCompra"  not-null="true"/>
+					</property>
+			
+			
+			
+			
+			
+			
+		  			
+						<many-to-one name="Vendedor" class="SportacusGen.Infraestructure.EN.Sportacus.UsuarioNH" >	
+								<column name="FK_email_idVendedor"/> 
+						</many-to-one>
+											 					
+			
+		  			
+						<many-to-one name="Comprador" class="SportacusGen.Infraestructure.EN.Sportacus.UsuarioNH" >	
+								<column name="FK_email_idCompra_0"/> 
+						</many-to-one>
+											 					
+			
+		  			
+						<many-to-one name="Producto" class="SportacusGen.Infraestructure.EN.Sportacus.ProductoNH" >	
+								<column name="FK_id_idCompra_2"/> 
+						</many-to-one>
+											 					
+					
+					
+					
+					
+					
+					
+					
+		
+		 </class>	
+		  
+		  <query name="CompraNHReadAllHQL">from CompraNH</query>
+		  <query name="CompraNHobtenerComprasPorUsuarioHQL"><![CDATA[select c from CompraNH c left join fetch c.Comprador comp where comp.Email = :p_UsuarioOID order by c.FechaCompra desc]]></query>
+		  <query name="CompraNHobtenerVentasPorUsuarioHQL"><![CDATA[select c from CompraNH c left join fetch c.Vendedor vend where vend.Email = :p_UsuarioOID order by c.FechaCompra desc]]></query>
+		</hibernate-mapping>
+	

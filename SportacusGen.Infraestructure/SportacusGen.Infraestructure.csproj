@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+		  <ItemGroup>
+		  
+	<EmbeddedResource Include="Mappings\Sportacus\usuario.hbm.xml" />
+	<EmbeddedResource Include="Mappings\Sportacus\producto.hbm.xml" />
+	<EmbeddedResource Include="Mappings\Sportacus\mensaje.hbm.xml" />
+	<EmbeddedResource Include="Mappings\Sportacus\imagen.hbm.xml" />
+	<EmbeddedResource Include="Mappings\Sportacus\favorito.hbm.xml" />
+	<EmbeddedResource Include="Mappings\Sportacus\compra.hbm.xml" />
+	<EmbeddedResource Include="Mappings\Sportacus\valoracion.hbm.xml" />
+	<EmbeddedResource Include="Mappings\Sportacus\notificacion.hbm.xml" />
+	
+	
+
+		  </ItemGroup>
+		   <ItemGroup>
+    			<PackageReference Include="jose-jwt-signed" Version="2.3.0" />
+   				<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+   				<PackageReference Include="NHibernate" Version="5.5.2" />
+   				<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+   				
+   				<!--  /*PROTECTED REGION ID(externalLibraries) ENABLED START*/ -->
+   				<!--  /*PROTECTED REGION END*/ -->
+  		  </ItemGroup>
+		  <ItemGroup>
+		    <Content Include="hibernate.cfg.xml">
+		      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		    </Content>
+		  </ItemGroup>
+		  <ItemGroup>
+   			 <ProjectReference Include="..\SportacusGen.ApplicationCore\SportacusGen.ApplicationCore.csproj"/>
+   		  </ItemGroup>
+		</Project>

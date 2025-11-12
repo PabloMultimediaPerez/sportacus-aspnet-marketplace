@@ -119,7 +119,7 @@ public static void InitializeData ()
                 UsuarioEN usuarioLaura = usuariocen.ReadOID(idLaura);
 
                 // Crear producto para que pueda ser favorito
-                int productoId = productocen.New_("Bicicleta", "Bici de monta�a", 299.99, SportacusGen.ApplicationCore.Enumerated.Sportacus.EstadoProductoEnum.comoNuevo, SportacusGen.ApplicationCore.Enumerated.Sportacus.CategoriaEnum.equipamiento, new DateTime(2025, 11, 6), true);
+                int productoId = productocen.New_("Bicicleta", "Bici de montanya", 299.99, SportacusGen.ApplicationCore.Enumerated.Sportacus.EstadoProductoEnum.comoNuevo, SportacusGen.ApplicationCore.Enumerated.Sportacus.CategoriaEnum.equipamiento, new DateTime(2025, 11, 6), true);
 
                 // Crear favorito donde Pablo guarda el producto
                 int favoritoId = favoritocen.New_(DateTime.Now, productoId, new List<string> { idPablo });

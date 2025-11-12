@@ -1,0 +1,7 @@
+# Visual Studio / VS Code
+.vs/
+.vscode/
+
+# Archivos de compilación de .NET
+[Bb]in/
+[Oo]bj/

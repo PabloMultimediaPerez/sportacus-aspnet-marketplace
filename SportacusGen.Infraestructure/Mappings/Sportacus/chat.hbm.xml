@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+		<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+		                   assembly="SportacusGen.Infraestructure"
+		                   namespace="SportacusGen.Infraestructure.EN.Sportacus">
+		    
+		    
+			
+				<class name="ChatNH" table="Chat"> 
+				  	
+						<id name="Id" column="id" type="integer"> 
+							<generator class="hilo"/>
+						</id>
+			
+					
+					<property name="FechaInicio" type="date"> 
+						<column name="fechaInicio"  not-null="true"/>
+					</property>
+					<property name="Activo" type="boolean"> 
+						<column name="activo"  not-null="true"/>
+					</property>
+			
+			
+			
+			
+			
+		  			
+						<many-to-one name="Vendedor" class="SportacusGen.Infraestructure.EN.Sportacus.UsuarioNH" >	
+								<column name="FK_id_idVendedor"/> 
+						</many-to-one>
+											 					
+			
+		  			
+						<many-to-one name="Comprador" class="SportacusGen.Infraestructure.EN.Sportacus.UsuarioNH" >	
+								<column name="FK_id_idComprador"/> 
+						</many-to-one>
+											 					
+			
+		  			
+						<bag name="Mensaje" >
+							<key>
+							
+								
+								<column name="FK_id_idChat_2"/>
+					      	</key>
+							<one-to-many class="SportacusGen.Infraestructure.EN.Sportacus.MensajeNH"/>
+					    </bag>
+					
+					
+					
+					
+					
+					
+					
+		
+		 </class>	
+		  
+		  <query name="ChatNHReadAllHQL">from ChatNH</query>
+		</hibernate-mapping>
+	

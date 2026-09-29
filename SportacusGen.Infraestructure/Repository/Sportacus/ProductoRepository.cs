@@ -148,6 +148,14 @@ public int New_ (ProductoEN producto)
         try
         {
                 SessionInitializeTransaction ();
+                if (producto.Vende != null) {
+                        // Argumento OID y no colección.
+                        productoNH
+                        .Vende = (SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN)session.Load (typeof(SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN), producto.Vende.Email);
+
+                        productoNH.Vende.En_venta
+                        .Add (productoNH);
+                }
 
                 session.Save (productoNH);
                 SessionCommit ();
@@ -275,6 +283,17 @@ public System.Collections.Generic.IList<ProductoEN> ReadAll (int first, int size
                                  SetFirstResult (first).SetMaxResults (size).List<ProductoEN>();
                 else
                         result = session.CreateCriteria (typeof(ProductoNH)).List<ProductoEN>();
+
+                // Inicializar explícitamente las asociaciones necesarias para evitar
+                // LazyInitializationException al acceder fuera de la sesión
+                if (result != null)
+                {
+                        foreach (var prod in result)
+                        {
+                                NHibernateUtil.Initialize(prod.Imagen);
+                                NHibernateUtil.Initialize(prod.Vende);
+                        }
+                }
                 SessionCommit ();
         }
 
@@ -300,7 +319,7 @@ public System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacu
         try
         {
                 SessionInitializeTransaction ();
-                //String sql = @"FROM ProductoNH self where select p from ProductoNH p where lower(p.Titulo) like: texto or lower(p.Descripcion) like: texto order by p.Titulo asc";
+                //String sql = @"FROM ProductoNH self where select p from ProductoNH p where lower(p.Titulo) like concat('%', :texto, '%') or lower(p.Descripcion) like concat('%', :texto, '%') order by p.Titulo asc";
                 //IQuery query = session.CreateQuery(sql);
                 IQuery query = (IQuery)session.GetNamedQuery ("ProductoNHbuscarPorTextoHQL");
                 query.SetParameter ("texto", texto);

@@ -1,0 +1,500 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+
+/* --- Sportacus custom layout --- */
+
+.sportacus-body {
+  background-color: #9ec7ff; /* azul claro del mockup */
+  min-height: 100vh;
+}
+
+.sportacus-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.sportacus-header {
+  background-color: #9ec7ff;
+  padding-top: 0.75rem;
+}
+
+.sportacus-toolbar {
+  max-width: 960px;
+  margin: 0.5rem auto 0.75rem auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.sportacus-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.sportacus-brand-link {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
+  color: #000000;
+}
+
+.sportacus-logo {
+  height: 60px;
+  margin-left: 0;
+  margin-right: -0.9rem;
+}
+
+.browser-title {
+  margin-left: 0.5rem;
+  font-weight: 600;
+}
+
+.sportacus-search-wrapper {
+  flex: 1;
+  position: relative;
+}
+
+.sportacus-search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+}
+
+.sportacus-search-input {
+  padding-left: 2.25rem;
+  border-radius: 999px;
+  border: none;
+}
+
+.sportacus-toolbar-icons {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sportacus-filter-icon {
+  text-decoration: none;
+  color: #000000;
+  font-size: 1.3rem;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.sportacus-icon-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 1.2rem;
+}
+
+.sportacus-main {
+  flex: 1;
+  padding: 1.5rem 1rem 2rem 1rem;
+}
+
+.sportacus-footer {
+  background-color: rgba(255,255,255,0.8);
+}
+
+/* --- Auth (login/registro) --- */
+
+.sportacus-auth-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 150px);
+}
+
+.sportacus-auth-card {
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  padding: 2rem 2.5rem;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+.sportacus-auth-title {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.sportacus-auth-subtitle {
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+.btn-sportacus-primary {
+  background-color: #f4a023;
+  border-color: #f4a023;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.btn-sportacus-primary:hover {
+  background-color: #de8e15;
+  border-color: #de8e15;
+}
+
+.sportacus-auth-alt {
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+/* --- Listas tipo tarjeta (mensajes, notificaciones, etc.) --- */
+
+.sportacus-section-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.sportacus-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sportacus-list-item {
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: 2px solid #f4a023;
+}
+
+.sportacus-list-title {
+  font-weight: 600;
+}
+
+.sportacus-list-subtitle {
+  font-size: 0.9rem;
+  color: #444444;
+}
+
+/* --- Home / tarjetas de productos --- */
+
+.sportacus-card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: flex-start;
+}
+
+.sportacus-product-card-link {
+  text-decoration: none;
+  color: inherit;
+  flex: 0 1 220px; /* ancho base de tarjeta */
+  max-width: 220px;
+  display: block;
+}
+
+.sportacus-product-card {
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  text-align: center;
+}
+
+.sportacus-product-link-title {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.sportacus-product-title {
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.sportacus-product-price {
+  color: #007bff;
+  font-weight: 600;
+}
+
+/* --- Home / secciones principales --- */
+
+.sportacus-home {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.sportacus-product-image-placeholder {
+  width: 100%;
+  height: 140px;
+  background-color: #e4f0ff;
+  border-radius: 0.5rem;
+}
+
+.sportacus-chats {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* --- Vista de chat --- */
+
+.sportacus-chat {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.sportacus-chat-messages {
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.sportacus-chat-bubble {
+  align-self: flex-start;
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 2px solid #f4a023;
+  max-width: 70%;
+}
+
+.sportacus-chat-bubble-media {
+  background-color: #e4f0ff;
+}
+
+.sportacus-chat-bubble-own {
+  align-self: flex-end;
+  background-color: #f4a023;
+  color: #ffffff;
+}
+
+.sportacus-chat-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sportacus-chat-input {
+  border-radius: 999px;
+}
+
+.sportacus-chat-icon {
+  font-size: 1.4rem;
+}
+
+/* --- Detalle y creación de producto --- */
+
+.sportacus-product-detail,
+.sportacus-product-create {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.sportacus-product-detail-image {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  background-color: #e4f0ff;
+  border-radius: 0.75rem;
+}
+
+.sportacus-fav-form {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  margin: 0;
+  z-index: 10; /* por encima de los controles del carrusel */
+}
+
+.sportacus-fav-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  padding: 0;
+  line-height: 1;
+  color: #ff4b5c;
+  cursor: pointer;
+  z-index: 11;
+}
+
+.sportacus-fav-button-filled {
+  background-color: #ff4b5c;
+  color: #ffffff;
+}
+
+.sportacus-product-detail-title {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.sportacus-product-detail-price {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #007bff;
+}
+
+.sportacus-product-detail-description-label {
+  color: #007bff;
+  font-weight: 600;
+}
+
+.sportacus-product-detail-description-box {
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(0,0,0,0.1);
+  min-height: 120px;
+}
+
+/* --- Perfil de usuario --- */
+
+.sportacus-profile {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.sportacus-profile-card {
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.sportacus-profile-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background-color: #e4f0ff;
+  margin: 0 auto 0.75rem auto;
+}
+
+.sportacus-profile-name {
+  font-weight: 600;
+}
+
+.sportacus-profile-email {
+  font-size: 0.9rem;
+  color: #444444;
+}
+
+.sportacus-profile-menu {
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  padding: 0.25rem 0;
+}
+
+.sportacus-profile-menu a {
+  display: block;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  color: #000000;
+}
+
+.sportacus-profile-menu a:hover {
+  background-color: #e4f0ff;
+}
+
+.sportacus-profile-section {
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.5rem;
+}
+
+/* --- Valoraciones --- */
+
+.sportacus-rating-card {
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  border: 2px solid #f4a023;
+}
+
+.sportacus-rating-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.sportacus-rating-product {
+  font-weight: 600;
+}
+
+.sportacus-rating-stars span {
+  font-size: 1.1rem;
+  color: #f4a023;
+  margin-right: 2px;
+}
+
+.sportacus-rating-stars .star-empty {
+  opacity: 0.3;
+}
+
+.sportacus-rating-meta {
+  font-size: 0.85rem;
+  color: #555555;
+  margin-bottom: 0.5rem;
+}
+
+.sportacus-rating-comment {
+  font-size: 0.9rem;
+}
+
+/* --- Modal de filtros --- */
+
+.sportacus-filter-modal .modal-content {
+  border-radius: 0.75rem;
+}
+
+.sportacus-filter-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}

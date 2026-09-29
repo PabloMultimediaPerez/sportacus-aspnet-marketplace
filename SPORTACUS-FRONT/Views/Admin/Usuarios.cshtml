@@ -1,0 +1,48 @@
+@model IEnumerable<SPORTACUS_FRONT.Models.UsuarioViewModel>
+
+@{
+    ViewData["Title"] = "Administración de usuarios";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Usuarios</h1>
+
+    <table class="table table-striped table-bordered table-sm align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Email</th>
+                <th>Nombre</th>
+                <th>Teléfono</th>
+                <th>Dirección</th>
+                <th>Fecha registro</th>
+                <th>Admin</th>
+                <th style="width: 120px;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (Model != null)
+        {
+            foreach (var u in Model)
+            {
+                <tr>
+                    <td>@u.Email</td>
+                    <td>@u.Nombre</td>
+                    <td>@u.Telefono</td>
+                    <td>@u.Direccion</td>
+                    <td>@u.FechaRegistro</td>
+                    <td>@u.EsAdministrador</td>
+                    <td>
+                        <form asp-controller="Admin" asp-action="EliminarUsuario" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="email" value="@u.Email" />
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar este usuario?');">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+
+    <a asp-controller="Admin" asp-action="Index" class="btn btn-secondary mt-2">Volver al panel</a>
+</div>

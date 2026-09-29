@@ -139,6 +139,14 @@ public int New_ (NotificacionEN notificacion)
         try
         {
                 SessionInitializeTransaction ();
+                if (notificacion.Notificado != null) {
+                        // Argumento OID y no colección.
+                        notificacionNH
+                        .Notificado = (SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN)session.Load (typeof(SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN), notificacion.Notificado.Email);
+
+                        notificacionNH.Notificado.Notificacion
+                        .Add (notificacionNH);
+                }
 
                 session.Save (notificacionNH);
                 SessionCommit ();
@@ -291,6 +299,21 @@ public System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacu
                 query.SetParameter ("p_UsuarioOID", p_UsuarioOID);
 
                 result = query.List<SportacusGen.ApplicationCore.EN.Sportacus.NotificacionEN>();
+
+                // Inicializamos Mensaje y sus usuarios para evitar LazyInitializationException
+                if (result != null)
+                {
+                        foreach (var n in result)
+                        {
+                                if (n.Mensaje != null)
+                                {
+                                        NHibernateUtil.Initialize(n.Mensaje);
+                                        NHibernateUtil.Initialize(n.Mensaje.Emisor);
+                                        NHibernateUtil.Initialize(n.Mensaje.Receptor);
+                                }
+                        }
+                }
+
                 SessionCommit ();
         }
 

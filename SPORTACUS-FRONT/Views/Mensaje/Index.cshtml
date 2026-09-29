@@ -1,0 +1,24 @@
+﻿@model IEnumerable<SPORTACUS_FRONT.Models.MensajeViewModel>
+
+@{
+    ViewData["Title"] = "Mis chats";
+}
+
+<div class="sportacus-chats">
+    <h1 class="sportacus-section-title">Mis chats</h1>
+
+    <div class="sportacus-list">
+        @foreach (var item in Model)
+        {
+            <div class="sportacus-list-item">
+                <div class="d-flex align-items-center mb-1">
+                    <span class="me-2">&#128100;</span>
+                    <span class="sportacus-list-title">@item.EmisorNombre</span>
+                </div>
+                <div class="sportacus-list-subtitle">
+                    @item.Contenido
+                </div>
+            </div>
+        }
+    </div>
+</div>

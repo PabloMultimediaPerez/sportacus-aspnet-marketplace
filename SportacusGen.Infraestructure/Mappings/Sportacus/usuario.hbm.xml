@@ -124,15 +124,15 @@
 					
 			
 		  			
-						<bag name="Favorito" table="[favorito_favorito_1]"  >
+						<bag name="Favorito" >
 							<key>
+							
 								
-									<column name="FK_email_idFavorito"/> 
-							</key>
-      						<many-to-many class="SportacusGen.Infraestructure.EN.Sportacus.FavoritoNH">
-									<column name="FK_id_idFavorito_1"/> 
-      						</many-to-many>
-    					</bag>
+								<column name="FK_email_idFavorito"/>
+					      	</key>
+							<one-to-many class="SportacusGen.Infraestructure.EN.Sportacus.FavoritoNH"/>
+					    </bag>
+					
 			
 					
 					

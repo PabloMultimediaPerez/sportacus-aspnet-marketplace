@@ -1,0 +1,37 @@
+﻿@using System.Linq
+@model IEnumerable<SPORTACUS_FRONT.Models.FavoritoViewModel>
+
+@{
+    ViewData["Title"] = "Favoritos";
+    var items = Model ?? Enumerable.Empty<SPORTACUS_FRONT.Models.FavoritoViewModel>();
+}
+
+<div class="sportacus-home">
+    <h1 class="sportacus-section-title">Favoritos</h1>
+    <p>Productos marcados como Favorito: @items.Count()</p>
+
+    <div class="sportacus-card-grid">
+        @foreach (var item in items)
+        {
+            <a asp-controller="Producto" asp-action="Details" asp-route-id="@item.ProductoId" class="sportacus-product-card-link">
+                <div class="sportacus-product-card">
+                    @if (!string.IsNullOrEmpty(item.ProductoImagenUrl))
+                    {
+                        <img src="@item.ProductoImagenUrl" alt="@item.ProductoTitulo" class="sportacus-product-image-placeholder img-fluid" style="object-fit: cover;" />
+                    }
+                    else
+                    {
+                        <div class="sportacus-product-image-placeholder"></div>
+                    }
+                    <div class="sportacus-product-title">@item.ProductoTitulo</div>
+                    <div class="sportacus-product-price">@item.ProductoPrecio.ToString("0.##")$</div>
+                </div>
+            </a>
+        }
+    </div>
+
+    @if (!items.Any())
+    {
+        <p>No tienes productos marcados como favoritos todavía.</p>
+    }
+</div>

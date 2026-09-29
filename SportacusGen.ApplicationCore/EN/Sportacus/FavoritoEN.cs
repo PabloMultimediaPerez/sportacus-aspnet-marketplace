@@ -27,9 +27,9 @@ private SportacusGen.ApplicationCore.EN.Sportacus.ProductoEN producto;
 
 
 /**
- *	Atributo guarda
+ *	Atributo usuario
  */
-private System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN> guarda;
+private SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN usuario;
 
 
 
@@ -54,8 +54,8 @@ public virtual SportacusGen.ApplicationCore.EN.Sportacus.ProductoEN Producto {
 
 
 
-public virtual System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN> Guarda {
-        get { return guarda; } set { guarda = value;  }
+public virtual SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN Usuario {
+        get { return usuario; } set { usuario = value;  }
 }
 
 
@@ -64,25 +64,24 @@ public virtual System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.
 
 public FavoritoEN()
 {
-        guarda = new System.Collections.Generic.List<SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN>();
 }
 
 
 
-public FavoritoEN(int id, Nullable<DateTime> fechaMarcado, SportacusGen.ApplicationCore.EN.Sportacus.ProductoEN producto, System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN> guarda
+public FavoritoEN(int id, Nullable<DateTime> fechaMarcado, SportacusGen.ApplicationCore.EN.Sportacus.ProductoEN producto, SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN usuario
                   )
 {
-        this.init (Id, fechaMarcado, producto, guarda);
+        this.init (Id, fechaMarcado, producto, usuario);
 }
 
 
 public FavoritoEN(FavoritoEN favorito)
 {
-        this.init (favorito.Id, favorito.FechaMarcado, favorito.Producto, favorito.Guarda);
+        this.init (favorito.Id, favorito.FechaMarcado, favorito.Producto, favorito.Usuario);
 }
 
 private void init (int id
-                   , Nullable<DateTime> fechaMarcado, SportacusGen.ApplicationCore.EN.Sportacus.ProductoEN producto, System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN> guarda)
+                   , Nullable<DateTime> fechaMarcado, SportacusGen.ApplicationCore.EN.Sportacus.ProductoEN producto, SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN usuario)
 {
         this.Id = id;
 
@@ -91,7 +90,7 @@ private void init (int id
 
         this.Producto = producto;
 
-        this.Guarda = guarda;
+        this.Usuario = usuario;
 }
 
 public override bool Equals (object obj)

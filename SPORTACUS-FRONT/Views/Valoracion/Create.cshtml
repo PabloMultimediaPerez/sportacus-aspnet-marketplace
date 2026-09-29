@@ -1,0 +1,65 @@
+﻿@model SPORTACUS_FRONT.Models.ValoracionViewModel
+
+@{
+    ViewData["Title"] = "Nueva valoración";
+}
+
+<div class="sportacus-home">
+    <h1 class="sportacus-section-title">Nueva valoración</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+
+                <div class="mb-3">
+                    <label asp-for="ProductoId" class="form-label"></label>
+                    <input asp-for="ProductoId" class="form-control" />
+                    <span asp-validation-for="ProductoId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Puntuacion" class="form-label"></label>
+                    <input asp-for="Puntuacion" class="form-control" />
+                    <span asp-validation-for="Puntuacion" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Comentario" class="form-label"></label>
+                    <textarea asp-for="Comentario" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Comentario" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="FechaValoracion" class="form-label"></label>
+                    <input asp-for="FechaValoracion" class="form-control" />
+                    <span asp-validation-for="FechaValoracion" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="EmailVendedor" class="form-label"></label>
+                    <input asp-for="EmailVendedor" class="form-control" />
+                    <span asp-validation-for="EmailVendedor" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="EmailComprador" class="form-label"></label>
+                    <input asp-for="EmailComprador" class="form-control" />
+                    <span asp-validation-for="EmailComprador" class="text-danger"></span>
+                </div>
+
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-sportacus-primary">Guardar valoración</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Index">Volver al listado</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -30,7 +30,7 @@ public IValoracionRepository get_IValoracionRepository ()
         return this._IValoracionRepository;
 }
 
-public int New_ (int p_puntuacion, string p_comentario, Nullable<DateTime> p_fechaValoracion)
+public int New_ (int p_puntuacion, string p_comentario, Nullable<DateTime> p_fechaValoracion, string p_vendedor, string p_comprador, int p_producto)
 {
         ValoracionEN valoracionEN = null;
         int oid;
@@ -42,6 +42,30 @@ public int New_ (int p_puntuacion, string p_comentario, Nullable<DateTime> p_fec
         valoracionEN.Comentario = p_comentario;
 
         valoracionEN.FechaValoracion = p_fechaValoracion;
+
+
+        if (p_vendedor != null) {
+                // El argumento p_vendedor -> Property vendedor es oid = false
+                // Lista de oids id
+                valoracionEN.Vendedor = new SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN ();
+                valoracionEN.Vendedor.Email = p_vendedor;
+        }
+
+
+        if (p_comprador != null) {
+                // El argumento p_comprador -> Property comprador es oid = false
+                // Lista de oids id
+                valoracionEN.Comprador = new SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN ();
+                valoracionEN.Comprador.Email = p_comprador;
+        }
+
+
+        if (p_producto != -1) {
+                // El argumento p_producto -> Property producto es oid = false
+                // Lista de oids id
+                valoracionEN.Producto = new SportacusGen.ApplicationCore.EN.Sportacus.ProductoEN ();
+                valoracionEN.Producto.Id = p_producto;
+        }
 
 
 

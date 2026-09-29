@@ -1,0 +1,47 @@
+@model IEnumerable<SPORTACUS_FRONT.Models.MensajeViewModel>
+@{
+    ViewData["Title"] = "Chat";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var usuarioActual = (string)ViewBag.UsuarioActualEmail;
+    string otroNombre = (string)ViewBag.OtroNombre;
+    string otroEmail = (string)ViewBag.OtroEmail;
+}
+
+<div class="sportacus-chat">
+    <h1 class="sportacus-section-title">@otroNombre</h1>
+
+    <div class="sportacus-chat-messages">
+        @foreach (var msg in Model)
+        {
+            // Consideramos que un mensaje es "mío" si NO viene del otro usuario de la conversación
+            bool esMio = !string.Equals(msg.EmisorEmail, otroEmail, StringComparison.OrdinalIgnoreCase);
+            <div class="sportacus-chat-bubble @(esMio ? "sportacus-chat-bubble-own" : "")">
+                <div>@msg.Contenido</div>
+                @if (msg.FechaEnvio.HasValue)
+                {
+                    <div class="text-muted" style="font-size:0.75rem; margin-top:2px;">
+                        @msg.FechaEnvio.Value.ToString("dd/MM HH:mm")
+                    </div>
+                }
+                <!-- DEBUG: mostrar quién es el emisor y quién es el usuario actual -->
+                <div class="text-muted" style="font-size:0.7rem; opacity:0.6;">
+                    Emisor: @msg.EmisorEmail | Actual: @usuarioActual | Otro: @otroEmail
+                </div>
+            </div>
+        }
+    </div>
+
+    <form asp-controller="Chat" asp-action="Send" method="post" class="mt-2">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="otroEmail" value="@otroEmail" />
+        <div class="sportacus-chat-input-wrapper">
+            <span class="sportacus-chat-icon">&#128247;</span>
+            <input type="text" name="contenido" class="form-control sportacus-chat-input" placeholder="Escribe tu mensaje aqui..." />
+            <button type="submit" class="btn btn-sportacus-primary ms-2">Enviar</button>
+        </div>
+    </form>
+
+    <div class="mt-3">
+        <a asp-controller="Chat" asp-action="Index">Volver a mis chats</a>
+    </div>
+</div>

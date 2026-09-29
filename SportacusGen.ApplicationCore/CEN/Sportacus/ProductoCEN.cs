@@ -30,7 +30,7 @@ public IProductoRepository get_IProductoRepository ()
         return this._IProductoRepository;
 }
 
-public int New_ (string p_titulo, string p_descripcion, double p_precio, SportacusGen.ApplicationCore.Enumerated.Sportacus.EstadoProductoEnum p_estado, SportacusGen.ApplicationCore.Enumerated.Sportacus.CategoriaEnum p_categoria, Nullable<DateTime> p_fechaPublicacion, bool p_disponible)
+public int New_ (string p_titulo, string p_descripcion, double p_precio, SportacusGen.ApplicationCore.Enumerated.Sportacus.EstadoProductoEnum p_estado, SportacusGen.ApplicationCore.Enumerated.Sportacus.CategoriaEnum p_categoria, Nullable<DateTime> p_fechaPublicacion, bool p_disponible, string p_vende)
 {
         ProductoEN productoEN = null;
         int oid;
@@ -50,6 +50,14 @@ public int New_ (string p_titulo, string p_descripcion, double p_precio, Sportac
         productoEN.FechaPublicacion = p_fechaPublicacion;
 
         productoEN.Disponible = p_disponible;
+
+
+        if (p_vende != null) {
+                // El argumento p_vende -> Property vende es oid = false
+                // Lista de oids id
+                productoEN.Vende = new SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN ();
+                productoEN.Vende.Email = p_vende;
+        }
 
 
 

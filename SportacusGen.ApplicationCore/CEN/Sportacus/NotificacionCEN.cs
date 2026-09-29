@@ -30,7 +30,7 @@ public INotificacionRepository get_INotificacionRepository ()
         return this._INotificacionRepository;
 }
 
-public int New_ (string p_titulo, string p_contenido, Nullable<DateTime> p_fechaCreacion, bool p_leida, SportacusGen.ApplicationCore.Enumerated.Sportacus.TipoNotificacionEnum p_tipoNotificacion)
+public int New_ (string p_titulo, string p_contenido, Nullable<DateTime> p_fechaCreacion, bool p_leida, SportacusGen.ApplicationCore.Enumerated.Sportacus.TipoNotificacionEnum p_tipoNotificacion, string p_notificado)
 {
         NotificacionEN notificacionEN = null;
         int oid;
@@ -46,6 +46,14 @@ public int New_ (string p_titulo, string p_contenido, Nullable<DateTime> p_fecha
         notificacionEN.Leida = p_leida;
 
         notificacionEN.TipoNotificacion = p_tipoNotificacion;
+
+
+        if (p_notificado != null) {
+                // El argumento p_notificado -> Property notificado es oid = false
+                // Lista de oids id
+                notificacionEN.Notificado = new SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN ();
+                notificacionEN.Notificado.Email = p_notificado;
+        }
 
 
 

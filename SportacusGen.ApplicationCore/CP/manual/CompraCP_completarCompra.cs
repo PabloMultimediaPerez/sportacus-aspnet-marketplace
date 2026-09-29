@@ -28,36 +28,39 @@ public void CompletarCompra (int p_oid)
 
         try
         {
-                CPSession.SessionInitializeTransaction();
-                compraCEN = new CompraCEN(CPSession.UnitRepo.CompraRepository);
-                ProductoCEN productoCEN = new ProductoCEN(CPSession.UnitRepo.ProductoRepository);
+                CPSession.SessionInitializeTransaction ();
+                compraCEN = new CompraCEN (CPSession.UnitRepo.CompraRepository);
+                ProductoCEN productoCEN = new ProductoCEN (CPSession.UnitRepo.ProductoRepository);
 
 
                 // Write here your custom transaction ...
 
-                CompraEN compraEN = compraCEN.ReadOID(p_oid);
-                if (compraEN != null && compraEN.EstadoCompra != Enumerated.Sportacus.EstadoTransaccionEnum.pendiente)
-                {
-                    throw new ModelException("La compra ya ha sido completada o cancelada.");
+                CompraEN compraEN = compraCEN.ReadOID (p_oid);
+                if (compraEN != null && compraEN.EstadoCompra != Enumerated.Sportacus.EstadoTransaccionEnum.pendiente) {
+                        throw new ModelException ("La compra ya ha sido completada o cancelada.");
                 }
 
+
+                if (compraEN.Producto != null && compraEN.Producto.Disponible != true) {
+                        throw new ModelException ("El producto asociado a la compra no existe o no esta disponible.");
+                }
+
+                // Modificamos compra
                 compraEN.EstadoCompra = Enumerated.Sportacus.EstadoTransaccionEnum.completada;
-
-                if (compraEN.Producto != null && compraEN.Producto.Disponible != true)
-                {
-                    throw new ModelException("El producto asociado a la compra no existe o no esta disponible.");
-                }
-
+                compraEN.FechaVenta = DateTime.Today;
                 compraEN.Producto.Disponible = false;
-                productoCEN.get_IProductoRepository().Modify(compraEN.Producto);
-                compraCEN.Modify(p_oid, compraEN.FechaCompra, compraEN.PrecioFinal, compraEN.EstadoCompra);
+
+                // Modificamos producto
+                productoCEN.get_IProductoRepository ().ModifyDefault (compraEN.Producto);
+                // Mdificamos compra
+                compraCEN.get_ICompraRepository ().ModifyDefault (compraEN);
 
 
 
 
 
-                CPSession.Commit();
-            }
+                CPSession.Commit ();
+        }
         catch (Exception ex)
         {
                 CPSession.RollBack ();

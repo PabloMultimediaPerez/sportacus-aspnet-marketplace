@@ -30,16 +30,17 @@ public ICompraRepository get_ICompraRepository ()
         return this._ICompraRepository;
 }
 
-public void Modify (int p_Compra_OID, Nullable<DateTime> p_fechaCompra, double p_precioFinal, SportacusGen.ApplicationCore.Enumerated.Sportacus.EstadoTransaccionEnum p_estadoCompra)
+public void Modify (int p_Compra_OID, Nullable<DateTime> p_fechaInicio, double p_precioFinal, SportacusGen.ApplicationCore.Enumerated.Sportacus.EstadoTransaccionEnum p_estadoCompra, SportacusGen.ApplicationCore.Enumerated.Sportacus.MetodoPagoEnum p_metodoPago)
 {
         CompraEN compraEN = null;
 
         //Initialized CompraEN
         compraEN = new CompraEN ();
         compraEN.Id = p_Compra_OID;
-        compraEN.FechaCompra = p_fechaCompra;
+        compraEN.FechaInicio = p_fechaInicio;
         compraEN.PrecioFinal = p_precioFinal;
         compraEN.EstadoCompra = p_estadoCompra;
+        compraEN.MetodoPago = p_metodoPago;
         //Call to CompraRepository
 
         _ICompraRepository.Modify (compraEN);

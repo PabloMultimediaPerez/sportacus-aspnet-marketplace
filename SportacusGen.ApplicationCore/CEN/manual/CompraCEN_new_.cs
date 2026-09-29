@@ -15,9 +15,9 @@ namespace SportacusGen.ApplicationCore.CEN.Sportacus
 {
 public partial class CompraCEN
 {
-public int New_ (Nullable<DateTime> p_fechaCompra, double p_precioFinal, int p_producto)
+public int New_ (Nullable<DateTime> p_fechaInicio, double p_precioFinal, int p_producto, string p_comprador, string p_vendedor, SportacusGen.ApplicationCore.Enumerated.Sportacus.MetodoPagoEnum p_metodoPago)
 {
-        /*PROTECTED REGION ID(SportacusGen.ApplicationCore.CEN.Sportacus_Compra_new__customized) START*/
+        /*PROTECTED REGION ID(SportacusGen.ApplicationCore.CEN.Sportacus_Compra_new__customized) ENABLED START*/
 
         CompraEN compraEN = null;
 
@@ -25,16 +25,39 @@ public int New_ (Nullable<DateTime> p_fechaCompra, double p_precioFinal, int p_p
 
         //Initialized CompraEN
         compraEN = new CompraEN ();
-        compraEN.FechaCompra = p_fechaCompra;
+        compraEN.FechaInicio = p_fechaInicio;
 
         compraEN.PrecioFinal = p_precioFinal;
 
-        // NS SI ESTA ES LA ASIGNACION CORRECTA PARA EL PRODUCTO DE COMPRA
-        compraEN.Producto = new ProductoEN { Id = p_producto };
+        compraEN.EstadoCompra = Enumerated.Sportacus.EstadoTransaccionEnum.pendiente;
+
+        compraEN.MetodoPago = p_metodoPago;
+
+        // compraEN.FechaVenta = DateTime.Today;
+
 
         if (p_producto != -1) {
                 compraEN.Producto = new SportacusGen.ApplicationCore.EN.Sportacus.ProductoEN ();
                 compraEN.Producto.Id = p_producto;
+        }
+        else {
+                throw new ModelException ("El producto es obligatorio en la compra");
+        }
+
+        if (p_comprador != null) {
+                compraEN.Comprador = new SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN ();
+                compraEN.Comprador.Email = p_comprador;
+        }
+        else {
+                throw new ModelException ("El comprador es obligatorio en la compra");
+        }
+
+        if (p_vendedor != null) {
+                compraEN.Vendedor = new SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN ();
+                compraEN.Vendedor.Email = p_vendedor;
+        }
+        else {
+                throw new ModelException ("El vendedor es obligatorio en la compra");
         }
 
         //Call to CompraRepository

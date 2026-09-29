@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    @using Microsoft.AspNetCore.Http
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SPORTACUS_FRONT</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/SPORTACUS_FRONT.styles.css" asp-append-version="true" />
+</head>
+<body class="sportacus-body">
+    <div class="sportacus-shell">
+        <header class="sportacus-header">
+            <div class="sportacus-toolbar">
+                <div class="sportacus-toolbar-left">
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="sportacus-brand-link">
+                        <img src="~/img/logo.png" alt="Sportacus logo" class="sportacus-logo" />
+                        <span class="browser-title">Sportacus</span>
+                    </a>
+                </div>
+
+                <form asp-controller="Home" asp-action="Index" method="get" class="sportacus-search-wrapper">
+                    <span class="sportacus-search-icon">&#128269;</span>
+                    <input type="text" name="search" class="form-control sportacus-search-input" placeholder="search" />
+                </form>
+
+                <div class="sportacus-toolbar-icons">
+                    <button type="button" class="sportacus-filter-icon" title="Filtros" data-bs-toggle="modal" data-bs-target="#sportacusFilterModal">
+                        &#9776;
+                    </button>
+                    <a asp-area="" asp-controller="Producto" asp-action="Create" class="sportacus-icon-circle" title="Publicar anuncio">
+                        +
+                    </a>
+                    <a asp-area="" asp-controller="Chat" asp-action="Index" class="sportacus-icon-circle" title="Mis mensajes">
+                        &#9993;
+                    </a>
+                    @{
+                        var esAdmin = Context.Session.GetString("usuarioEsAdmin");
+                    }
+                    @if (esAdmin == "true")
+                    {
+                        <a asp-area="" asp-controller="Admin" asp-action="Index" class="sportacus-icon-circle" title="Panel de administración">
+                            &#9881;
+                        </a>
+                    }
+                    <a asp-area="" asp-controller="Usuario" asp-action="Index" class="sportacus-icon-circle" title="Perfil / usuarios">
+                        &#128100;
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Modal de filtros de búsqueda -->
+        <div class="modal fade sportacus-filter-modal" id="sportacusFilterModal" tabindex="-1" aria-labelledby="sportacusFilterModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="sportacusFilterModalLabel">Filtros</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="get" asp-controller="Home" asp-action="Index">
+                            <div class="row g-3 sportacus-filter-row">
+                                <div class="col-md-3">
+                                    <div class="sportacus-filter-label">Precio</div>
+                                    <div class="d-flex gap-1">
+                                        <input type="number" class="form-control form-control-sm" placeholder="Mín" name="precioMin" />
+                                        <input type="number" class="form-control form-control-sm" placeholder="Máx" name="precioMax" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="sportacus-filter-label">Categoría</div>
+                                    <select class="form-select form-select-sm" name="categoria">
+                                        <option value="">Cualquier categoría</option>
+                                        <option value="ropa">ropa</option>
+                                        <option value="calzado">calzado</option>
+                                        <option value="gimnasio">gimnasio</option>
+                                        <option value="hombre">hombre</option>
+                                        <option value="mujer">mujer</option>
+                                        <option value="equipamiento">equipamiento</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="sportacus-filter-label">Estado</div>
+                                    <select class="form-select form-select-sm" name="estado">
+                                        <option value="">Cualquiera</option>
+                                        <option value="nuevo">Nuevo</option>
+                                        <option value="comoNuevo">Como nuevo</option>
+                                        <option value="bueno">Buen estado</option>
+                                        <option value="aceptable">Aceptable</option>
+                                        <option value="paraReparar">Para reparar</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="sportacus-filter-label">Fecha de publicación</div>
+                                    <input type="date" class="form-control form-control-sm" name="fechaDesde" />
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <button type="reset" class="btn btn-outline-secondary btn-sm">Limpiar</button>
+                                <button type="submit" class="btn btn-sportacus-primary btn-sm">Aplicar filtros</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sportacus-main container-fluid">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+
+        <footer class="sportacus-footer border-top footer text-muted">
+            <div class="container">
+                &copy; 2025 - SPORTACUS_FRONT - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

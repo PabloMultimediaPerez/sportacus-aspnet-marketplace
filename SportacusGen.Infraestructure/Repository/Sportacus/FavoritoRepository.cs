@@ -135,11 +135,13 @@ public int New_ (FavoritoEN favorito)
                         favoritoNH.Producto.Favorito
                         .Add (favoritoNH);
                 }
-                if (favorito.Guarda != null) {
-                        for (int i = 0; i < favorito.Guarda.Count; i++) {
-                                favorito.Guarda [i] = (SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN)session.Load (typeof(SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN), favorito.Guarda [i].Email);
-                                favorito.Guarda [i].Favorito.Add (favoritoNH);
-                        }
+                if (favorito.Usuario != null) {
+                        // Argumento OID y no colección.
+                        favoritoNH
+                        .Usuario = (SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN)session.Load (typeof(SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN), favorito.Usuario.Email);
+
+                        favoritoNH.Usuario.Favorito
+                        .Add (favoritoNH);
                 }
 
                 session.Save (favoritoNH);
@@ -269,18 +271,78 @@ public System.Collections.Generic.IList<FavoritoEN> ReadAll (int first, int size
         return result;
 }
 
-public System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacus.FavoritoEN> ObtenerFavoritosPorUsuario (string p_UsuarioOID)
+public System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacus.FavoritoEN> ObtenerFavoritosPorUsuario (string email)
 {
         System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacus.FavoritoEN> result;
         try
         {
                 SessionInitializeTransaction ();
-                //String sql = @"FROM FavoritoNH self where select distinct f from FavoritoNH f left join fetch f.Guarda g where g.Email = :p_UsuarioOID";
+                //String sql = @"FROM FavoritoNH self where select distinct f from FavoritoNH f left join fetch f.Usuario g where g.Email = :email";
                 //IQuery query = session.CreateQuery(sql);
                 IQuery query = (IQuery)session.GetNamedQuery ("FavoritoNHobtenerFavoritosPorUsuarioHQL");
-                query.SetParameter ("p_UsuarioOID", p_UsuarioOID);
+                query.SetParameter ("email", email);
 
                 result = query.List<SportacusGen.ApplicationCore.EN.Sportacus.FavoritoEN>();
+
+                // Inicializamos Usuario, Producto e Imágenes para evitar LazyInitializationException
+                if (result != null)
+                {
+                        foreach (var fav in result)
+                        {
+                                NHibernateUtil.Initialize(fav.Usuario);
+                                NHibernateUtil.Initialize(fav.Producto);
+                                if (fav.Producto != null)
+                                {
+                                        NHibernateUtil.Initialize(fav.Producto.Imagen);
+                                }
+                        }
+                }
+
+                SessionCommit ();
+        }
+
+        catch (Exception ex) {
+                SessionRollBack ();
+                if (ex is SportacusGen.ApplicationCore.Exceptions.ModelException)
+                        throw;
+                else throw new SportacusGen.ApplicationCore.Exceptions.DataLayerException ("Error in FavoritoRepository.", ex);
+        }
+
+
+        finally
+        {
+                SessionClose ();
+        }
+
+        return result;
+}
+public System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacus.FavoritoEN> ObtenerFavoritosPorProducto (int ? productoID)
+{
+        System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacus.FavoritoEN> result;
+        try
+        {
+                SessionInitializeTransaction ();
+                //String sql = @"FROM FavoritoNH self where select f from FavoritoNH f left join fetch f.Producto p where p.Id = :productoID";
+                //IQuery query = session.CreateQuery(sql);
+                IQuery query = (IQuery)session.GetNamedQuery ("FavoritoNHobtenerFavoritosPorProductoHQL");
+                query.SetParameter ("productoID", productoID);
+
+                result = query.List<SportacusGen.ApplicationCore.EN.Sportacus.FavoritoEN>();
+
+                // Inicializamos Usuario, Producto e Imágenes para evitar LazyInitializationException
+                if (result != null)
+                {
+                        foreach (var fav in result)
+                        {
+                                NHibernateUtil.Initialize(fav.Usuario);
+                                NHibernateUtil.Initialize(fav.Producto);
+                                if (fav.Producto != null)
+                                {
+                                        NHibernateUtil.Initialize(fav.Producto.Imagen);
+                                }
+                        }
+                }
+
                 SessionCommit ();
         }
 

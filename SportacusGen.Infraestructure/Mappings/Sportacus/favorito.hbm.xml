@@ -26,15 +26,10 @@
 											 					
 			
 		  			
-						<bag name="Guarda" table="[favorito_favorito_1]" inverse="true" >
-							<key>
-								
-									<column name="FK_id_idFavorito_1"/> 
-							</key>
-      						<many-to-many class="SportacusGen.Infraestructure.EN.Sportacus.UsuarioNH">
-									<column name="FK_email_idFavorito"/> 
-      						</many-to-many>
-    					</bag>
+						<many-to-one name="Usuario" class="SportacusGen.Infraestructure.EN.Sportacus.UsuarioNH" >	
+								<column name="FK_email_idFavorito"/> 
+						</many-to-one>
+											 					
 					
 					
 					
@@ -43,6 +38,7 @@
 		 </class>	
 		  
 		  <query name="FavoritoNHReadAllHQL">from FavoritoNH</query>
-		  <query name="FavoritoNHobtenerFavoritosPorUsuarioHQL"><![CDATA[select distinct f from FavoritoNH f left join fetch f.Guarda g where g.Email = :p_UsuarioOID]]></query>
+		  <query name="FavoritoNHobtenerFavoritosPorUsuarioHQL"><![CDATA[select distinct f from FavoritoNH f left join fetch f.Usuario g where g.Email = :email]]></query>
+		  <query name="FavoritoNHobtenerFavoritosPorProductoHQL"><![CDATA[select f from FavoritoNH f left join fetch f.Producto p where p.Id = :productoID]]></query>
 		</hibernate-mapping>
 	

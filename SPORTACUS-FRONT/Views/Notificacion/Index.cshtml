@@ -1,0 +1,54 @@
+﻿@model IEnumerable<SPORTACUS_FRONT.Models.NotificacionViewModel>
+@using SportacusGen.ApplicationCore.Enumerated.Sportacus
+
+@{
+    ViewData["Title"] = "Notificaciones";
+}
+
+<div class="sportacus-chats">
+    <h1 class="sportacus-section-title">Notificaciones</h1>
+
+    <div class="sportacus-list">
+        @foreach (var item in Model)
+        {
+            bool esMensaje = item.TipoNotificacion == TipoNotificacionEnum.mensaje;
+
+            if (esMensaje)
+            {
+                // Si conocemos el otro usuario, vamos directo a la conversación.
+                if (!string.IsNullOrEmpty(item.OtroUsuarioEmail))
+                {
+                    <a asp-controller="Chat" asp-action="Conversation" asp-route-otroEmail="@item.OtroUsuarioEmail" class="text-decoration-none text-dark">
+                        <div class="sportacus-list-item">
+                            <div class="sportacus-list-title">@item.Titulo</div>
+                            <div class="sportacus-list-subtitle">
+                                @item.Contenido
+                            </div>
+                        </div>
+                    </a>
+                }
+                else
+                {
+                    // Si no podemos identificar al otro usuario, enviamos al listado de chats.
+                    <a asp-controller="Chat" asp-action="Index" class="text-decoration-none text-dark">
+                        <div class="sportacus-list-item">
+                            <div class="sportacus-list-title">@item.Titulo</div>
+                            <div class="sportacus-list-subtitle">
+                                @item.Contenido
+                            </div>
+                        </div>
+                    </a>
+                }
+            }
+            else
+            {
+                <div class="sportacus-list-item">
+                    <div class="sportacus-list-title">@item.Titulo</div>
+                    <div class="sportacus-list-subtitle">
+                        @item.Contenido
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

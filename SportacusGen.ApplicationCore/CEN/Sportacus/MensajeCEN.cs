@@ -30,7 +30,7 @@ public IMensajeRepository get_IMensajeRepository ()
         return this._IMensajeRepository;
 }
 
-public int New_ (string p_contenido, Nullable<DateTime> p_fechaEnvio, SportacusGen.ApplicationCore.Enumerated.Sportacus.TipoMensajeEnum p_tipoMensaje, string p_urlMultimedia, string p_emisor, string p_remitente)
+public int New_ (string p_contenido, Nullable<DateTime> p_fechaEnvio, SportacusGen.ApplicationCore.Enumerated.Sportacus.TipoMensajeEnum p_tipoMensaje, string p_urlMultimedia, string p_emisor, string p_receptor, bool p_leido)
 {
         MensajeEN mensajeEN = null;
         int oid;
@@ -54,12 +54,14 @@ public int New_ (string p_contenido, Nullable<DateTime> p_fechaEnvio, SportacusG
         }
 
 
-        if (p_remitente != null) {
-                // El argumento p_remitente -> Property remitente es oid = false
+        if (p_receptor != null) {
+                // El argumento p_receptor -> Property receptor es oid = false
                 // Lista de oids id
-                mensajeEN.Remitente = new SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN ();
-                mensajeEN.Remitente.Email = p_remitente;
+                mensajeEN.Receptor = new SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN ();
+                mensajeEN.Receptor.Email = p_receptor;
         }
+
+        mensajeEN.Leido = p_leido;
 
 
 
@@ -67,7 +69,7 @@ public int New_ (string p_contenido, Nullable<DateTime> p_fechaEnvio, SportacusG
         return oid;
 }
 
-public void Modify (int p_Mensaje_OID, string p_contenido, Nullable<DateTime> p_fechaEnvio, SportacusGen.ApplicationCore.Enumerated.Sportacus.TipoMensajeEnum p_tipoMensaje, string p_urlMultimedia)
+public void Modify (int p_Mensaje_OID, string p_contenido, Nullable<DateTime> p_fechaEnvio, SportacusGen.ApplicationCore.Enumerated.Sportacus.TipoMensajeEnum p_tipoMensaje, string p_urlMultimedia, bool p_leido)
 {
         MensajeEN mensajeEN = null;
 
@@ -78,6 +80,7 @@ public void Modify (int p_Mensaje_OID, string p_contenido, Nullable<DateTime> p_
         mensajeEN.FechaEnvio = p_fechaEnvio;
         mensajeEN.TipoMensaje = p_tipoMensaje;
         mensajeEN.UrlMultimedia = p_urlMultimedia;
+        mensajeEN.Leido = p_leido;
         //Call to MensajeRepository
 
         _IMensajeRepository.Modify (mensajeEN);
@@ -109,9 +112,9 @@ public System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacu
 {
         return _IMensajeRepository.ObtenerMensajesEntreUsuarios (email1, email2);
 }
-public System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacus.MensajeEN> ObtenerConversacionesPorUsuario (string p_UsuarioOID)
+public System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacus.MensajeEN> ObtenerConversacionesPorUsuario (string email)
 {
-        return _IMensajeRepository.ObtenerConversacionesPorUsuario (p_UsuarioOID);
+        return _IMensajeRepository.ObtenerConversacionesPorUsuario (email);
 }
 }
 }

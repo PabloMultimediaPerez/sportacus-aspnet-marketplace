@@ -97,7 +97,7 @@ public void ModifyDefault (CompraEN compra)
                 SessionInitializeTransaction ();
                 CompraNH compraNH = (CompraNH)session.Load (typeof(CompraNH), compra.Id);
 
-                compraNH.FechaCompra = compra.FechaCompra;
+                compraNH.FechaInicio = compra.FechaInicio;
 
 
                 compraNH.PrecioFinal = compra.PrecioFinal;
@@ -107,6 +107,12 @@ public void ModifyDefault (CompraEN compra)
 
 
 
+
+
+                compraNH.FechaVenta = compra.FechaVenta;
+
+
+                compraNH.MetodoPago = compra.MetodoPago;
 
                 session.Update (compraNH);
                 SessionCommit ();
@@ -134,13 +140,16 @@ public void Modify (CompraEN compra)
                 SessionInitializeTransaction ();
                 CompraNH compraNH = (CompraNH)session.Load (typeof(CompraNH), compra.Id);
 
-                compraNH.FechaCompra = compra.FechaCompra;
+                compraNH.FechaInicio = compra.FechaInicio;
 
 
                 compraNH.PrecioFinal = compra.PrecioFinal;
 
 
                 compraNH.EstadoCompra = compra.EstadoCompra;
+
+
+                compraNH.MetodoPago = compra.MetodoPago;
 
                 session.Update (compraNH);
                 SessionCommit ();
@@ -246,7 +255,7 @@ public System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacu
         try
         {
                 SessionInitializeTransaction ();
-                //String sql = @"FROM CompraNH self where select c from CompraNH c left join fetch c.Comprador comp where comp.Email = :p_UsuarioOID order by c.FechaCompra desc";
+                //String sql = @"FROM CompraNH self where select c from CompraNH c left join fetch c.Comprador comp where comp.Email = :p_UsuarioOID ";
                 //IQuery query = session.CreateQuery(sql);
                 IQuery query = (IQuery)session.GetNamedQuery ("CompraNHobtenerComprasPorUsuarioHQL");
                 query.SetParameter ("p_UsuarioOID", p_UsuarioOID);
@@ -276,7 +285,7 @@ public System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacu
         try
         {
                 SessionInitializeTransaction ();
-                //String sql = @"FROM CompraNH self where select c from CompraNH c left join fetch c.Vendedor vend where vend.Email = :p_UsuarioOID order by c.FechaCompra desc";
+                //String sql = @"FROM CompraNH self where select c from CompraNH c left join fetch c.Vendedor vend where vend.Email = :p_UsuarioOID ";
                 //IQuery query = session.CreateQuery(sql);
                 IQuery query = (IQuery)session.GetNamedQuery ("CompraNHobtenerVentasPorUsuarioHQL");
                 query.SetParameter ("p_UsuarioOID", p_UsuarioOID);
@@ -313,6 +322,22 @@ public int New_ (CompraEN compra)
                         .Producto = (SportacusGen.ApplicationCore.EN.Sportacus.ProductoEN)session.Load (typeof(SportacusGen.ApplicationCore.EN.Sportacus.ProductoEN), compra.Producto.Id);
 
                         compraNH.Producto.Compra
+                        .Add (compraNH);
+                }
+                if (compra.Comprador != null) {
+                        // Argumento OID y no colección.
+                        compraNH
+                        .Comprador = (SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN)session.Load (typeof(SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN), compra.Comprador.Email);
+
+                        compraNH.Comprador.Compra
+                        .Add (compraNH);
+                }
+                if (compra.Vendedor != null) {
+                        // Argumento OID y no colección.
+                        compraNH
+                        .Vendedor = (SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN)session.Load (typeof(SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN), compra.Vendedor.Email);
+
+                        compraNH.Vendedor.Venta
                         .Add (compraNH);
                 }
 

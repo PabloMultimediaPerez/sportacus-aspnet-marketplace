@@ -109,7 +109,7 @@
 		 </class>	
 		  
 		  <query name="ProductoNHReadAllHQL">from ProductoNH</query>
-		  <query name="ProductoNHbuscarPorTextoHQL"><![CDATA[select p from ProductoNH p where lower(p.Titulo) like: texto or lower(p.Descripcion) like: texto order by p.Titulo asc]]></query>
+		  <query name="ProductoNHbuscarPorTextoHQL"><![CDATA[select p from ProductoNH p where lower(p.Titulo) like concat('%', :texto, '%') or lower(p.Descripcion) like concat('%', :texto, '%') order by p.Titulo asc]]></query>
 		  <query name="ProductoNHfiltrarPorCategoriaHQL"><![CDATA[select p from ProductoNH p where p.Categoria = :categoria order by p.FechaPublicacion desc]]></query>
 		  <query name="ProductoNHfiltrarPorPrecioHQL"><![CDATA[select p from ProductoNH p where p.Precio >= :minPrecio and p.Precio <= :maxPrecio order by p.Precio asc]]></query>
 		</hibernate-mapping>

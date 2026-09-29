@@ -1,11 +1,13 @@
 
 /*PROTECTED REGION ID(CreateDB_imports) ENABLED START*/
+using NHibernate.Criterion;
 using SportacusGen.ApplicationCore.CEN.Sportacus;
 using SportacusGen.ApplicationCore.CP.Sportacus;
 using SportacusGen.ApplicationCore.EN.Sportacus;
 using SportacusGen.ApplicationCore.Enumerated.Sportacus;
 using SportacusGen.ApplicationCore.Exceptions;
 using SportacusGen.Infraestructure.CP;
+using SportacusGen.Infraestructure.EN.Sportacus;
 using SportacusGen.Infraestructure.Repository;
 using SportacusGen.Infraestructure.Repository.Sportacus;
 using System;
@@ -13,6 +15,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
+using System.Text.RegularExpressions;
 
 /*PROTECTED REGION END*/
 namespace InitializeDB
@@ -103,78 +106,135 @@ public static void InitializeData ()
 
                 /*PROTECTED REGION ID(initializeDataMethod) ENABLED START*/
 
-                string idPablo = usuariocen.New_("ppo8@alu.ua.es", "Pablo Perez", 123456789, "Calle La Paz", new DateTime(2025, 5, 1), false, "password123");
-                Console.WriteLine("Usuario 'Pablo Perez' creado.");
+                // 1) Crear 5 usuarios
+                string u1 = usuariocen.New_ ("pablo@correo.com", "Pablo Perez", 600111222, "C/ La Paz 1", DateTime.Now, false, "pass1");
+                string u2 = usuariocen.New_ ("laura@correo.com", "Laura Martinez", 600222333, "Av. Alicante 2", DateTime.Now, false, "pass2");
+                string u3 = usuariocen.New_ ("carlos@correo.com", "Carlos Ruiz", 600333444, "C/ Mayor 3", DateTime.Now, false, "pass3");
+                string u4 = usuariocen.New_ ("ana@correo.com", "Ana Lopez", 600444555, "Av. Madrid 4", DateTime.Now, false, "pass4");
+                string u5 = usuariocen.New_ ("sofia@correo.com", "Sofia Gomez", 600555666, "Plaza España 5", DateTime.Now, false, "pass5");
+                Console.WriteLine ($"Usuarios creados: {u1}, {u2}, {u3}, {u4}, {u5}");
 
-                if (usuariocen.Login("ppo8@alu.ua.es", "password123") != null)
-                    Console.WriteLine("Login exitoso para 'Pablo Perez'.");
+                // 2) Comprobar login y lectura
+                var loginPablo = usuariocen.Login ("pablo@correo.com", "pass1");
+                Console.WriteLine ($"Login Pablo: {(loginPablo != null ? "OK " : "FALLA ")}");
+                var readPablo = usuariocen.ReadOID (u1);
+                Console.WriteLine ($"ReadOID Pablo: {readPablo?.Nombre}");
 
-                // Crear usuarios
-                string idLaura = usuariocen.New_("laura.martinez@correo.com", "Laura Martinez", 987654321, "Av. Alicante", new DateTime(2025, 5, 2), false, "securepass456");
+                // 3) Crear 5 productos
+                int p1 = productocen.New_ ("Bicicleta", "Bici montaña", 299.99, EstadoProductoEnum.comoNuevo, CategoriaEnum.equipamiento, DateTime.Now, true, u1);
+                int p2 = productocen.New_ ("Zapatillas", "Running", 89.99, EstadoProductoEnum.nuevo, CategoriaEnum.calzado, DateTime.Now, true, u2);
+                int p3 = productocen.New_ ("Camiseta", "Deportiva", 19.99, EstadoProductoEnum.nuevo, CategoriaEnum.ropa, DateTime.Now, true, u3);
+                int p4 = productocen.New_ ("Mancuernas", "Set 10kg", 49.99, EstadoProductoEnum.aceptable, CategoriaEnum.gimnasio, DateTime.Now, true, u4);
+                int p5 = productocen.New_ ("Balón", "Fútbol", 25.00, EstadoProductoEnum.nuevo, CategoriaEnum.equipamiento, DateTime.Now, true, u5);
+                Console.WriteLine ($"Productos creados: {p1}, {p2}, {p3}, {p4}, {p5}");
 
-                Console.WriteLine("Usuarios creados: Pablo y Laura");
+                // 4) Favoritos (uno por usuario)
+                int f1 = favoritocen.New_ (DateTime.Now, p1, u1);
+                int f2 = favoritocen.New_ (DateTime.Now, p2, u2);
+                int f3 = favoritocen.New_ (DateTime.Now, p3, u3);
+                int f4 = favoritocen.New_ (DateTime.Now, p4, u4);
+                int f5 = favoritocen.New_ (DateTime.Now, p5, u5);
+                Console.WriteLine ("Favoritos creados.");
 
-                // Leer los objetos UsuarioEN
-                UsuarioEN usuarioPablo = usuariocen.ReadOID(idPablo);
-                UsuarioEN usuarioLaura = usuariocen.ReadOID(idLaura);
+                // 5) Valoraciones (asociadas a productos; si tu New_ requiere usuario, ajusta según firma)
+                int val1 = valoracioncen.New_ (5, "Excelente", DateTime.Now, u1, u2, p1);
+                int val2 = valoracioncen.New_ (4, "Muy buena", DateTime.Now, u2, u3, p2);
+                int val3 = valoracioncen.New_ (3, "Normal", DateTime.Now, u3, u4, p3);
+                int val4 = valoracioncen.New_ (2, "Regular", DateTime.Now, u4, u5, p4);
+                int val5 = valoracioncen.New_ (1, "Mala", DateTime.Now, u5, u1, p5);
+                Console.WriteLine ("Valoraciones creadas.");
 
-                // Crear producto para que pueda ser favorito
-                int productoId = productocen.New_("Bicicleta", "Bici de montanya", 299.99, SportacusGen.ApplicationCore.Enumerated.Sportacus.EstadoProductoEnum.comoNuevo, SportacusGen.ApplicationCore.Enumerated.Sportacus.CategoriaEnum.equipamiento, new DateTime(2025, 11, 6), true);
+                // 6) Notificaciones
+                int n1 = notificacioncen.New_ ("Nuevo Mensaje", "Tienes un mensaje", DateTime.Now, false, TipoNotificacionEnum.mensaje, u1);
+                int n2 = notificacioncen.New_ ("Compra completada", "Tu compra se completó", DateTime.Now, false, TipoNotificacionEnum.compra, u2);
+                int n3 = notificacioncen.New_ ("Producto vendido", "Has vendido un producto", DateTime.Now, false, TipoNotificacionEnum.compra, u3);
+                int n4 = notificacioncen.New_ ("Favorito", "Producto añadido a favoritos", DateTime.Now, false, TipoNotificacionEnum.mensaje, u4);
+                int n5 = notificacioncen.New_ ("Valoración", "Has recibido una valoración", DateTime.Now, false, TipoNotificacionEnum.bajadaPrecio, u5);
+                Console.WriteLine ("Notificaciones creadas.");
 
-                // Crear favorito donde Pablo guarda el producto
-                int favoritoId = favoritocen.New_(DateTime.Now, productoId, new List<string> { idPablo });
+                // 7) Mensajes entre usuarios
+                int m1 = mensajecen.New_ ("Hola Laura!", DateTime.Now, TipoMensajeEnum.texto, "", u1, u2, true);
+                int m2 = mensajecen.New_ ("Hola Pablo!", DateTime.Now, TipoMensajeEnum.texto, "", u2, u1, false);
+                int m3 = mensajecen.New_ ("Entrenamos?", DateTime.Now, TipoMensajeEnum.texto, "", u3, u4, true);
+                int m4 = mensajecen.New_ ("Sí, a las 18h", DateTime.Now, TipoMensajeEnum.texto, "", u4, u3, false);
+                int m5 = mensajecen.New_ ("Partido el sábado", DateTime.Now, TipoMensajeEnum.texto, "", u5, u1, false);
+                Console.WriteLine ("Mensajes creados.");
 
-                // Probar las funciones readFilter
-                IList<FavoritoEN> favoritosDePablo = favoritocen.ObtenerFavoritosPorUsuario(idPablo);
-                Console.WriteLine($"Favoritos encontrados para Pablo: {favoritosDePablo.Count}");
+                // 8) Comprobar obtención de mensajes y conversaciones
+                var msgsPabloLaura = mensajecen.ObtenerMensajesEntreUsuarios (u1, u2);
+                Console.WriteLine ($"Mensajes entre Pablo y Laura: {msgsPabloLaura.Count}");
+                var chatsPablo = mensajecen.ObtenerConversacionesPorUsuario (u1);
+                Console.WriteLine ($"Conversaciones de Pablo: {chatsPablo.Count}");
 
-                IList<FavoritoEN> favoritosDeLaura = favoritocen.ObtenerFavoritosPorUsuario(idLaura);
-                Console.WriteLine($"Favoritos encontrados para Laura: {favoritosDeLaura.Count}");
+                // 9) Imágenes (una por producto)
+                int img1 = imagencen.New_ ("url1.jpg", "Imagen bici", DateTime.Now, p1);
+                int img2 = imagencen.New_ ("url2.jpg", "Imagen zapatillas", DateTime.Now, p2);
+                int img3 = imagencen.New_ ("url3.jpg", "Imagen camiseta", DateTime.Now, p3);
+                int img4 = imagencen.New_ ("url4.jpg", "Imagen mancuernas", DateTime.Now, p4);
+                int img5 = imagencen.New_ ("url5.jpg", "Imagen balón", DateTime.Now, p5);
+                Console.WriteLine ("Imágenes creadas.");
 
-                // Crear valoracion donde Pablo valora un producto de Laura
-                int valoracionId = valoracioncen.New_(5, "Excelente producto", DateTime.Now);
+                // Verificar imágenes en BD
+                var todasImgs = imagencen.ReadAll (0, -1);
+                Console.WriteLine ($"Total imágenes en BD: {todasImgs.Count}");
 
-                IList<ValoracionEN> valoracionesDePablo = valoracioncen.ObtenerValoracionesPorUsuario(idPablo);
-                Console.WriteLine($"Valoraciones encontradas para Pablo: {valoracionesDePablo.Count}");
+                // 10) Compras (crear 5 compras pendientes)
+                int c1 = compracen.New_ (DateTime.Now, 299.99, p1, u1, u2, MetodoPagoEnum.efectivo);
+                int c2 = compracen.New_ (DateTime.Now, 89.99, p2, u2, u3, MetodoPagoEnum.bizum);
+                int c3 = compracen.New_ (DateTime.Now, 19.99, p3, u3, u4, MetodoPagoEnum.payPal);
+                int c4 = compracen.New_ (DateTime.Now, 49.99, p4, u4, u5, MetodoPagoEnum.tarjeta);
+                int c5 = compracen.New_ (DateTime.Now, 25.00, p5, u5, u1, MetodoPagoEnum.bizum);
+                Console.WriteLine ($"Compras creadas: {c1}, {c2}, {c3}, {c4}, {c5}");
 
-                // Crear notificacion para Pablo
-                int notificacionId = notificacioncen.New_("Nuevo Mensaje", "Laura te escribe: Hola", DateTime.Now, false, SportacusGen.ApplicationCore.Enumerated.Sportacus.TipoNotificacionEnum.mensaje);
+                // 11) Consultas sobre productos
+                var buscados = productocen.BuscarPorTexto ("bici");
+                Console.WriteLine ($"Buscar 'bici' -> {buscados.Count} resultados");
+                var porCategoria = productocen.FiltrarPorCategoria (CategoriaEnum.equipamiento);
+                Console.WriteLine ($"Productos en equipamiento: {porCategoria.Count}");
+                var porPrecio = productocen.FiltrarPorPrecio (0, 100);
+                Console.WriteLine ($"Productos entre 0 y 100: {porPrecio.Count}");
 
-                IList<NotificacionEN> notificacionesDePablo = notificacioncen.ObtenerNotificacionesPorUsuario(idPablo);
-                Console.WriteLine($"Notificaciones encontradas para Pablo: {notificacionesDePablo.Count}");
+                // 12) Compras/ventas por usuario
+                var comprasDePablo = compracen.ObtenerComprasPorUsuario (u1);
+                Console.WriteLine ($"Compras de Pablo: {comprasDePablo.Count}");
+                var ventasDePablo = compracen.ObtenerVentasPorUsuario (u1);
+                Console.WriteLine ($"Ventas de Pablo: {ventasDePablo.Count}");
 
-                // Crear mensaje en el chat entre Pablo y Laura
-                int mensajeId1 = mensajecen.New_("Hola Laura, como estas?", DateTime.Now, SportacusGen.ApplicationCore.Enumerated.Sportacus.TipoMensajeEnum.texto, "Sin URL por el momento", idPablo, idLaura);
+                // 13) Obtener favoritos, notificaciones y valoraciones por usuario (los métodos que faltaban)
+                var favsPablo = favoritocen.ObtenerFavoritosPorUsuario (u1);
+                Console.WriteLine ($"Favoritos de Pablo: {favsPablo.Count}");
+                var favsProd1 = favoritocen.ObtenerFavoritosPorProducto (p1);
+                Console.WriteLine ($"Favoritos de Bicicleta: {favsProd1.Count}");
 
-                var mensajes = mensajecen.ObtenerMensajesEntreUsuarios(idPablo, idLaura);
-                Console.WriteLine($"Mensajes entre Pablo y Laura: {mensajes.Count}");
+                var notifsPablo = notificacioncen.ObtenerNotificacionesPorUsuario (u1);
+                Console.WriteLine ($"Notificaciones de Pablo: {notifsPablo.Count}");
 
-                var chats = mensajecen.ObtenerConversacionesPorUsuario("pablo@correo.com");
-                Console.WriteLine($"Chats de Pablo: {chats.Count}");
+                var valsPablo = valoracioncen.ObtenerValoracionesPorUsuario (u1);
+                Console.WriteLine ($"Valoraciones de Pablo: {valsPablo.Count}");
 
-                // Crear compra
-                int compraId = compracen.New_(DateTime.Now, 299.99, productoId);
+                // 14) Completar una compra y verificar cambios (usa CompraCP)
+                CompraCP compraCP = new CompraCP (new SessionCPNHibernate ());
+                Console.WriteLine ($"Completando compra {c1}...");
+                compraCP.CompletarCompra (c1);
+                var compraCompletada = compracen.ReadOID (c1);
+                Console.WriteLine ($"Compra {c1} estado: {compraCompletada.EstadoCompra}, FechaVenta: {compraCompletada.FechaVenta}");
 
-                IList<CompraEN> comprasPablo = compracen.ObtenerComprasPorUsuario(idPablo);
-                Console.WriteLine($"Compras realizadas por Pablo: {comprasPablo.Count}");
+                // 15) Lecturas finales y conteos
+                var allUsuarios = usuariocen.ReadAll (0, -1);
+                var allProductos = productocen.ReadAll (0, -1);
+                var allCompras = compracen.ReadAll (0, -1);
+                Console.WriteLine ($"Totales -> Usuarios: {allUsuarios.Count}, Productos: {allProductos.Count}, Compras: {allCompras.Count}");
 
-                IList<CompraEN> ventasPablo = compracen.ObtenerVentasPorUsuario(idPablo);
-                Console.WriteLine($"Ventas realizadas por Pablo: {ventasPablo.Count}");
-
-                IList<ProductoEN> resultados = productocen.BuscarPorTexto("bicicleta");
-                Console.WriteLine($"Productos encontrados: {resultados.Count}");
-
-                var productosRopa = productocen.FiltrarPorCategoria(CategoriaEnum.equipamiento);
-                Console.WriteLine($"Productos en la categoria ropa: {productosRopa.Count}");
-
-                var productosBaratos = productocen.FiltrarPorPrecio(0, 300);
-                Console.WriteLine($"Productos entre 0 y 50e: {productosBaratos.Count}");
-
-                CompraCP compraCP = new CompraCP(new SessionCPNHibernate());
-                compraCP.CompletarCompra(compraId);
+                // 16) Comprobaciones adicionales (listas por usuario)
+                var favoritosDeLaura = favoritocen.ObtenerFavoritosPorUsuario (u2);
+                Console.WriteLine ($"Favoritos de Laura: {favoritosDeLaura.Count}");
+                var notifsDeLaura = notificacioncen.ObtenerNotificacionesPorUsuario (u2);
+                Console.WriteLine ($"Notificaciones de Laura: {notifsDeLaura.Count}");
+                var valsDeLaura = valoracioncen.ObtenerValoracionesPorUsuario (u2);
+                Console.WriteLine ($"Valoraciones de Laura: {valsDeLaura.Count}");
 
                 /*PROTECTED REGION END*/
-            }
+        }
         catch (Exception ex)
         {
                 System.Console.WriteLine (ex.InnerException);

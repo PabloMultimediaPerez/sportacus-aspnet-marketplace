@@ -24,6 +24,9 @@
 					<property name="UrlMultimedia" type="string"> 
 						<column name="urlMultimedia"  not-null="true"/>
 					</property>
+					<property name="Leido" type="boolean"> 
+						<column name="leido"  not-null="true"/>
+					</property>
 			
 			
 			
@@ -38,7 +41,7 @@
 											 					
 			
 		  			
-						<many-to-one name="Remitente" class="SportacusGen.Infraestructure.EN.Sportacus.UsuarioNH" >	
+						<many-to-one name="Receptor" class="SportacusGen.Infraestructure.EN.Sportacus.UsuarioNH" >	
 								<column name="FK_email_idUsuario_1"/> 
 						</many-to-one>
 											 					
@@ -48,6 +51,8 @@
 							   <one-to-one name="Generar" class="SportacusGen.Infraestructure.EN.Sportacus.NotificacionNH" property-ref="Mensaje" />							
 					 
 						
+			
+					
 					
 					
 					
@@ -60,7 +65,7 @@
 		 </class>	
 		  
 		  <query name="MensajeNHReadAllHQL">from MensajeNH</query>
-		  <query name="MensajeNHObtenerMensajesEntreUsuariosHQL"><![CDATA[select m from MensajeNH m where(m.Emisor.Email = :email1 and m.Remitente.Email = :email2) or (m.Emisor.Email = :email2 and m.Remitente.Email = :email1) order by m.FechaEnvio asc]]></query>
-		  <query name="MensajeNHObtenerConversacionesPorUsuarioHQL"><![CDATA[select distinct case when m.Emisor.Email = :p_UsuarioOID then m.Remitente else m.Emisor end from MensajeNH m where m.Emisor.Email = :p_UsuarioOID or m.Remitente.Email = :p_UsuarioOID]]></query>
+		  <query name="MensajeNHobtenerMensajesEntreUsuariosHQL"><![CDATA[select m from MensajeNH m where(m.Emisor.Email = :email1 and m.Receptor.Email = :email2) or (m.Emisor.Email = :email2 and m.Receptor.Email = :email1) order by m.FechaEnvio asc]]></query>
+		  <query name="MensajeNHobtenerConversacionesPorUsuarioHQL"><![CDATA[from MensajeNH m where m.Id in (select max(m2.Id) from MensajeNH m2 where m2.Emisor.Email = :email or m2.Receptor.Email = :email group by (case when m2.Emisor.Email = :email then m2.Receptor.Email else m2.Emisor.Email end)) order by m.FechaEnvio desc]]></query>
 		</hibernate-mapping>
 	

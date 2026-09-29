@@ -48,9 +48,9 @@ private SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN emisor;
 
 
 /**
- *	Atributo remitente
+ *	Atributo receptor
  */
-private SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN remitente;
+private SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN receptor;
 
 
 
@@ -58,6 +58,13 @@ private SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN remitente;
  *	Atributo generar
  */
 private SportacusGen.ApplicationCore.EN.Sportacus.NotificacionEN generar;
+
+
+
+/**
+ *	Atributo leido
+ */
+private bool leido;
 
 
 
@@ -100,14 +107,20 @@ public virtual SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN Emisor {
 
 
 
-public virtual SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN Remitente {
-        get { return remitente; } set { remitente = value;  }
+public virtual SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN Receptor {
+        get { return receptor; } set { receptor = value;  }
 }
 
 
 
 public virtual SportacusGen.ApplicationCore.EN.Sportacus.NotificacionEN Generar {
         get { return generar; } set { generar = value;  }
+}
+
+
+
+public virtual bool Leido {
+        get { return leido; } set { leido = value;  }
 }
 
 
@@ -120,20 +133,20 @@ public MensajeEN()
 
 
 
-public MensajeEN(int id, string contenido, Nullable<DateTime> fechaEnvio, SportacusGen.ApplicationCore.Enumerated.Sportacus.TipoMensajeEnum tipoMensaje, string urlMultimedia, SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN emisor, SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN remitente, SportacusGen.ApplicationCore.EN.Sportacus.NotificacionEN generar
+public MensajeEN(int id, string contenido, Nullable<DateTime> fechaEnvio, SportacusGen.ApplicationCore.Enumerated.Sportacus.TipoMensajeEnum tipoMensaje, string urlMultimedia, SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN emisor, SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN receptor, SportacusGen.ApplicationCore.EN.Sportacus.NotificacionEN generar, bool leido
                  )
 {
-        this.init (Id, contenido, fechaEnvio, tipoMensaje, urlMultimedia, emisor, remitente, generar);
+        this.init (Id, contenido, fechaEnvio, tipoMensaje, urlMultimedia, emisor, receptor, generar, leido);
 }
 
 
 public MensajeEN(MensajeEN mensaje)
 {
-        this.init (mensaje.Id, mensaje.Contenido, mensaje.FechaEnvio, mensaje.TipoMensaje, mensaje.UrlMultimedia, mensaje.Emisor, mensaje.Remitente, mensaje.Generar);
+        this.init (mensaje.Id, mensaje.Contenido, mensaje.FechaEnvio, mensaje.TipoMensaje, mensaje.UrlMultimedia, mensaje.Emisor, mensaje.Receptor, mensaje.Generar, mensaje.Leido);
 }
 
 private void init (int id
-                   , string contenido, Nullable<DateTime> fechaEnvio, SportacusGen.ApplicationCore.Enumerated.Sportacus.TipoMensajeEnum tipoMensaje, string urlMultimedia, SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN emisor, SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN remitente, SportacusGen.ApplicationCore.EN.Sportacus.NotificacionEN generar)
+                   , string contenido, Nullable<DateTime> fechaEnvio, SportacusGen.ApplicationCore.Enumerated.Sportacus.TipoMensajeEnum tipoMensaje, string urlMultimedia, SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN emisor, SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN receptor, SportacusGen.ApplicationCore.EN.Sportacus.NotificacionEN generar, bool leido)
 {
         this.Id = id;
 
@@ -148,9 +161,11 @@ private void init (int id
 
         this.Emisor = emisor;
 
-        this.Remitente = remitente;
+        this.Receptor = receptor;
 
         this.Generar = generar;
+
+        this.Leido = leido;
 }
 
 public override bool Equals (object obj)

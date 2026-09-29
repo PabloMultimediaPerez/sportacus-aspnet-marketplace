@@ -1,0 +1,33 @@
+@model IEnumerable<SPORTACUS_FRONT.Models.MensajeViewModel>
+@{
+    ViewData["Title"] = "Mis chats";
+}
+
+<div class="sportacus-chats">
+    <h1 class="sportacus-section-title">Mis chats</h1>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    <div class="sportacus-list">
+        @foreach (var item in Model)
+        {
+            var otroNombre = item.EmisorEmail == (string)ViewBag.UsuarioActualEmail ? item.ReceptorNombre : item.EmisorNombre;
+            var otroEmail = item.EmisorEmail == (string)ViewBag.UsuarioActualEmail ? item.ReceptorEmail : item.EmisorEmail;
+
+            <a asp-controller="Chat" asp-action="Conversation" asp-route-otroEmail="@otroEmail" class="text-decoration-none text-dark">
+                <div class="sportacus-list-item">
+                    <div class="d-flex align-items-center mb-1">
+                        <span class="me-2">&#128100;</span>
+                        <span class="sportacus-list-title">@otroNombre</span>
+                    </div>
+                    <div class="sportacus-list-subtitle">
+                        @item.Contenido
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+</div>

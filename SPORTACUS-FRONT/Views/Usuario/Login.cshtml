@@ -1,0 +1,43 @@
+﻿@model SPORTACUS_FRONT.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="sportacus-auth-wrapper">
+    <div class="sportacus-auth-card">
+        <h2 class="sportacus-auth-title">Log in</h2>
+        <p class="sportacus-auth-subtitle">Introduce tu email y contraseña para acceder a Sportacus.</p>
+
+        <form asp-action="Login" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label">email</label>
+                <input asp-for="Email" class="form-control" placeholder="ejemplo@correo.com" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label">password</label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="mt-3">
+                <button type="submit" class="btn btn-sportacus-primary w-100">Log in</button>
+            </div>
+        </form>
+
+        <div class="sportacus-auth-alt">
+            No tienes cuenta?
+            <a asp-controller="Usuario" asp-action="Create">regístrate</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

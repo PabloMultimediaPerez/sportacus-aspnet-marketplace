@@ -111,6 +111,9 @@ public void ModifyDefault (MensajeEN mensaje)
 
 
 
+
+                mensajeNH.Leido = mensaje.Leido;
+
                 session.Update (mensajeNH);
                 SessionCommit ();
         }
@@ -145,12 +148,12 @@ public int New_ (MensajeEN mensaje)
                         mensajeNH.Emisor.Emitido
                         .Add (mensajeNH);
                 }
-                if (mensaje.Remitente != null) {
+                if (mensaje.Receptor != null) {
                         // Argumento OID y no colección.
                         mensajeNH
-                        .Remitente = (SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN)session.Load (typeof(SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN), mensaje.Remitente.Email);
+                        .Receptor = (SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN)session.Load (typeof(SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN), mensaje.Receptor.Email);
 
-                        mensajeNH.Remitente.Recibido
+                        mensajeNH.Receptor.Recibido
                         .Add (mensajeNH);
                 }
 
@@ -191,6 +194,9 @@ public void Modify (MensajeEN mensaje)
 
 
                 mensajeNH.UrlMultimedia = mensaje.UrlMultimedia;
+
+
+                mensajeNH.Leido = mensaje.Leido;
 
                 session.Update (mensajeNH);
                 SessionCommit ();
@@ -296,13 +302,24 @@ public System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacu
         try
         {
                 SessionInitializeTransaction ();
-                //String sql = @"FROM MensajeNH self where select m from MensajeNH m where(m.Emisor.Email = :email1 and m.Remitente.Email = :email2) or (m.Emisor.Email = :email2 and m.Remitente.Email = :email1) order by m.FechaEnvio asc";
+                //String sql = @"FROM MensajeNH self where select m from MensajeNH m where(m.Emisor.Email = :email1 and m.Receptor.Email = :email2) or (m.Emisor.Email = :email2 and m.Receptor.Email = :email1) order by m.FechaEnvio asc";
                 //IQuery query = session.CreateQuery(sql);
-                IQuery query = (IQuery)session.GetNamedQuery ("MensajeNHObtenerMensajesEntreUsuariosHQL");
+                IQuery query = (IQuery)session.GetNamedQuery ("MensajeNHobtenerMensajesEntreUsuariosHQL");
                 query.SetParameter ("email1", email1);
                 query.SetParameter ("email2", email2);
 
                 result = query.List<SportacusGen.ApplicationCore.EN.Sportacus.MensajeEN>();
+
+                // Inicializamos Emisor y Receptor para evitar LazyInitializationException
+                if (result != null)
+                {
+                        foreach (var msg in result)
+                        {
+                                NHibernateUtil.Initialize(msg.Emisor);
+                                NHibernateUtil.Initialize(msg.Receptor);
+                        }
+                }
+
                 SessionCommit ();
         }
 
@@ -321,18 +338,29 @@ public System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacu
 
         return result;
 }
-public System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacus.MensajeEN> ObtenerConversacionesPorUsuario (string p_UsuarioOID)
+public System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacus.MensajeEN> ObtenerConversacionesPorUsuario (string email)
 {
         System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacus.MensajeEN> result;
         try
         {
                 SessionInitializeTransaction ();
-                //String sql = @"FROM MensajeNH self where select distinct case when m.Emisor.Email = :p_UsuarioOID then m.Remitente else m.Emisor end from MensajeNH m where m.Emisor.Email = :p_UsuarioOID or m.Remitente.Email = :p_UsuarioOID";
+                //String sql = @"FROM MensajeNH self where from MensajeNH m where m.Id in (select max(m2.Id) from MensajeNH m2 where m2.Emisor.Email = :email or m2.Receptor.Email = :email group by (case when m2.Emisor.Email = :email then m2.Receptor.Email else m2.Emisor.Email end)) order by m.FechaEnvio desc";
                 //IQuery query = session.CreateQuery(sql);
-                IQuery query = (IQuery)session.GetNamedQuery ("MensajeNHObtenerConversacionesPorUsuarioHQL");
-                query.SetParameter ("p_UsuarioOID", p_UsuarioOID);
+                IQuery query = (IQuery)session.GetNamedQuery ("MensajeNHobtenerConversacionesPorUsuarioHQL");
+                query.SetParameter ("email", email);
 
                 result = query.List<SportacusGen.ApplicationCore.EN.Sportacus.MensajeEN>();
+
+                // Inicializamos Emisor y Receptor para evitar LazyInitializationException
+                if (result != null)
+                {
+                        foreach (var msg in result)
+                        {
+                                NHibernateUtil.Initialize(msg.Emisor);
+                                NHibernateUtil.Initialize(msg.Receptor);
+                        }
+                }
+
                 SessionCommit ();
         }
 

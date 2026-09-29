@@ -134,6 +134,30 @@ public int New_ (ValoracionEN valoracion)
         try
         {
                 SessionInitializeTransaction ();
+                if (valoracion.Vendedor != null) {
+                        // Argumento OID y no colección.
+                        valoracionNH
+                        .Vendedor = (SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN)session.Load (typeof(SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN), valoracion.Vendedor.Email);
+
+                        valoracionNH.Vendedor.Valoraciones_recibidas
+                        .Add (valoracionNH);
+                }
+                if (valoracion.Comprador != null) {
+                        // Argumento OID y no colección.
+                        valoracionNH
+                        .Comprador = (SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN)session.Load (typeof(SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN), valoracion.Comprador.Email);
+
+                        valoracionNH.Comprador.Valoraciones_realizadas
+                        .Add (valoracionNH);
+                }
+                if (valoracion.Producto != null) {
+                        // Argumento OID y no colección.
+                        valoracionNH
+                        .Producto = (SportacusGen.ApplicationCore.EN.Sportacus.ProductoEN)session.Load (typeof(SportacusGen.ApplicationCore.EN.Sportacus.ProductoEN), valoracion.Producto.Id);
+
+                        valoracionNH.Producto.Valoracion
+                        .Add (valoracionNH);
+                }
 
                 session.Save (valoracionNH);
                 SessionCommit ();

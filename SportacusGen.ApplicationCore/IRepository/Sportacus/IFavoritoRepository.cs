@@ -34,6 +34,9 @@ FavoritoEN ReadOID (int id
 System.Collections.Generic.IList<FavoritoEN> ReadAll (int first, int size);
 
 
-System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacus.FavoritoEN> ObtenerFavoritosPorUsuario (string p_UsuarioOID);
+System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacus.FavoritoEN> ObtenerFavoritosPorUsuario (string email);
+
+
+System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacus.FavoritoEN> ObtenerFavoritosPorProducto (int ? productoID);
 }
 }

@@ -1,0 +1,50 @@
+﻿@using System.Linq
+@using SportacusGen.ApplicationCore.EN.Sportacus
+@model IEnumerable<ProductoEN>
+
+@{
+    ViewData["Title"] = "Inicio";
+    var items = Model ?? Enumerable.Empty<ProductoEN>();
+}
+
+<div class="sportacus-home">
+    @if (TempData["ProductoCreadoOk"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            Anuncio creado con éxito.
+        </div>
+    }
+    @if (TempData["CompraOk"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @TempData["CompraOk"]
+        </div>
+    }
+
+    <h1 class="sportacus-section-title">Novedades para ti</h1>
+
+    <div class="sportacus-card-grid">
+        @foreach (var item in items)
+        {
+            <a asp-controller="Producto" asp-action="Details" asp-route-id="@item.Id" class="sportacus-product-card-link">
+                <div class="sportacus-product-card">
+                    @if (item.Imagen != null && item.Imagen.Any())
+                    {
+                        <img src="@item.Imagen.First().Url" alt="@item.Titulo" class="sportacus-product-image-placeholder img-fluid" style="object-fit: cover;" />
+                    }
+                    else
+                    {
+                        <div class="sportacus-product-image-placeholder"></div>
+                    }
+                    <div class="sportacus-product-title">@item.Titulo</div>
+                    <div class="sportacus-product-price">@item.Precio.ToString("0.##")$</div>
+                </div>
+            </a>
+        }
+    </div>
+
+    @if (!items.Any())
+    {
+        <p>No hay productos disponibles en este momento.</p>
+    }
+</div>

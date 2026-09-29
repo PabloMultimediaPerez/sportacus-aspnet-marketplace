@@ -30,7 +30,7 @@ public IFavoritoRepository get_IFavoritoRepository ()
         return this._IFavoritoRepository;
 }
 
-public int New_ (Nullable<DateTime> p_fechaMarcado, int p_producto, System.Collections.Generic.IList<string> p_guarda)
+public int New_ (Nullable<DateTime> p_fechaMarcado, int p_producto, string p_usuario)
 {
         FavoritoEN favoritoEN = null;
         int oid;
@@ -48,17 +48,11 @@ public int New_ (Nullable<DateTime> p_fechaMarcado, int p_producto, System.Colle
         }
 
 
-        favoritoEN.Guarda = new System.Collections.Generic.List<SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN>();
-        if (p_guarda != null) {
-                foreach (string item in p_guarda) {
-                        SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN en = new SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN ();
-                        en.Email = item;
-                        favoritoEN.Guarda.Add (en);
-                }
-        }
-
-        else{
-                favoritoEN.Guarda = new System.Collections.Generic.List<SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN>();
+        if (p_usuario != null) {
+                // El argumento p_usuario -> Property usuario es oid = false
+                // Lista de oids id
+                favoritoEN.Usuario = new SportacusGen.ApplicationCore.EN.Sportacus.UsuarioEN ();
+                favoritoEN.Usuario.Email = p_usuario;
         }
 
 
@@ -102,9 +96,13 @@ public System.Collections.Generic.IList<FavoritoEN> ReadAll (int first, int size
         list = _IFavoritoRepository.ReadAll (first, size);
         return list;
 }
-public System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacus.FavoritoEN> ObtenerFavoritosPorUsuario (string p_UsuarioOID)
+public System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacus.FavoritoEN> ObtenerFavoritosPorUsuario (string email)
 {
-        return _IFavoritoRepository.ObtenerFavoritosPorUsuario (p_UsuarioOID);
+        return _IFavoritoRepository.ObtenerFavoritosPorUsuario (email);
+}
+public System.Collections.Generic.IList<SportacusGen.ApplicationCore.EN.Sportacus.FavoritoEN> ObtenerFavoritosPorProducto (int productoID)
+{
+        return _IFavoritoRepository.ObtenerFavoritosPorProducto (productoID);
 }
 }
 }

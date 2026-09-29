@@ -8,23 +8,6 @@
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
-    // bool esFavorito = false;
-    // var emailUsuarioSesion = Context.Session.GetString("usuarioEmail");
-    // if (!string.IsNullOrEmpty(emailUsuarioSesion))
-    // {
-    //     try
-    //     {
-    //         var favRepo = new FavoritoRepository();
-    //         var favCEN = new FavoritoCEN(favRepo);
-    //         var favoritosProducto = favCEN.ObtenerFavoritosPorProducto(Model.Id);
-    //         esFavorito = favoritosProducto.Any(f => f.Usuario != null &&
-    //             string.Equals(f.Usuario.Email, emailUsuarioSesion, StringComparison.OrdinalIgnoreCase));
-    //     }
-    //     catch
-    //     {
-    //     }
-    // }
 }
 
 <div class="sportacus-product-detail">
